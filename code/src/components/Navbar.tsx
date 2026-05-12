@@ -44,12 +44,7 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
             <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Ana Sayfa</Link>
-            <div className="relative group">
-              <button className="flex items-center gap-1 text-sm font-medium hover:text-primary transition-colors">
-                Ürünler <ChevronDown className="w-4 h-4" />
-              </button>
-              {/* Dropdown can be expanded here */}
-            </div>
+            <Link href="/products" className="text-sm font-medium hover:text-primary transition-colors">Ürünler</Link>
             <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">Hakkımızda</Link>
             <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">İletişim</Link>
           </div>
