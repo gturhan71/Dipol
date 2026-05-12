@@ -50,14 +50,17 @@ export default function AdminDashboard() {
   const [editingCategory, setEditingCategory] = useState<any>(null);
 
   useEffect(() => {
-    const auth = localStorage.getItem("dipol_admin_auth");
-    if (!auth) {
+    const token = localStorage.getItem("dipol_admin_auth");
+    if (!token) {
       router.push("/portal/login");
       return;
     }
 
     fetch("/api/content")
-      .then(res => res.json())
+      .then(res => {
+        if (res.status === 401) throw new Error("Unauthorized");
+        return res.json();
+      })
       .then(data => {
         setLogo(data.logo || "");
         setHeroTitle(data.hero.title);
@@ -73,7 +76,8 @@ export default function AdminDashboard() {
       })
       .catch(err => {
         console.error("Fetch error:", err);
-        setIsLoading(false);
+        localStorage.removeItem("dipol_admin_auth");
+        router.push("/portal/login");
       });
   }, [router]);
 
@@ -82,12 +86,20 @@ export default function AdminDashboard() {
     router.push("/portal/login");
   };
 
+  const getAuthHeader = () => {
+    const token = localStorage.getItem("dipol_admin_auth");
+    return token ? { "Authorization": `Bearer ${token}` } : {};
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
       const response = await fetch("/api/content", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...getAuthHeader()
+        },
         body: JSON.stringify({
           logo: logo,
           hero: { title: heroTitle, description: heroDesc, image: heroImage },
@@ -99,6 +111,11 @@ export default function AdminDashboard() {
           testimonials: testimonials
         })
       });
+
+      if (response.status === 401) {
+        handleLogout();
+        return;
+      }
 
       if (response.ok) {
         setIsSaved(true);
@@ -122,16 +139,26 @@ export default function AdminDashboard() {
     try {
       const res = await fetch("/api/upload", {
         method: "POST",
+        headers: { ...getAuthHeader() },
         body: formData,
       });
+
+      if (res.status === 401) {
+        handleLogout();
+        return;
+      }
+
       const data = await res.json();
       if (data.success) {
         if (target === "hero") setHeroImage(data.url);
         if (target === "about") setAbout({ ...about, image: data.url });
         if (target === "logo") setLogo(data.url);
+      } else {
+        alert(data.error || "Dosya yükleme başarısız.");
       }
     } catch (error) {
       console.error("Upload error:", error);
+      alert("Bağlantı hatası oluştu.");
     } finally {
       setUploadingImage(null);
     }
