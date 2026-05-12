@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import useSWR from "swr";
+import Image from "next/image";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
@@ -20,8 +21,12 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6 group">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl transition-transform group-hover:scale-110">
-                D
+              <div className="relative w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl overflow-hidden shadow-lg transition-transform group-hover:scale-110">
+                {content?.logo ? (
+                  <Image src={content.logo} alt="Logo" fill className="object-contain p-1" />
+                ) : (
+                  "D"
+                )}
               </div>
               <span className="font-bold text-xl tracking-tight">DIPOL</span>
             </Link>

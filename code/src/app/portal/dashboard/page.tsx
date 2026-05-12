@@ -23,7 +23,8 @@ import {
   Zap,
   MessageSquare,
   Upload,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Chrome
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -31,6 +32,7 @@ import Image from "next/image";
 export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("content");
+  const [logo, setLogo] = useState("");
   const [heroTitle, setHeroTitle] = useState("");
   const [heroDesc, setHeroDesc] = useState("");
   const [heroImage, setHeroImage] = useState("");
@@ -47,8 +49,6 @@ export default function AdminDashboard() {
   const [uploadingImage, setUploadingImage] = useState<string | null>(null);
   const [editingCategory, setEditingCategory] = useState<any>(null);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     const auth = localStorage.getItem("dipol_admin_auth");
     if (!auth) {
@@ -59,6 +59,7 @@ export default function AdminDashboard() {
     fetch("/api/content")
       .then(res => res.json())
       .then(data => {
+        setLogo(data.logo || "");
         setHeroTitle(data.hero.title);
         setHeroDesc(data.hero.description);
         setHeroImage(data.hero.image || "/hero-lab.png");
@@ -88,6 +89,7 @@ export default function AdminDashboard() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          logo: logo,
           hero: { title: heroTitle, description: heroDesc, image: heroImage },
           stats: stats,
           about: about,
@@ -109,7 +111,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "hero" | "about") => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "hero" | "about" | "logo") => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -126,6 +128,7 @@ export default function AdminDashboard() {
       if (data.success) {
         if (target === "hero") setHeroImage(data.url);
         if (target === "about") setAbout({ ...about, image: data.url });
+        if (target === "logo") setLogo(data.url);
       }
     } catch (error) {
       console.error("Upload error:", error);
@@ -182,6 +185,7 @@ export default function AdminDashboard() {
 
         <nav className="space-y-2 flex-1">
           {[
+            { id: "settings", icon: Settings, label: "Genel Ayarlar" },
             { id: "content", icon: FileText, label: "Ana Sayfa" },
             { id: "about", icon: Info, label: "Hakkımızda" },
             { id: "testimonials", icon: MessageSquare, label: "Yorumlar" },
@@ -218,6 +222,7 @@ export default function AdminDashboard() {
         <header className="flex justify-between items-center mb-10">
           <div>
             <h2 className="text-3xl font-bold tracking-tight uppercase">
+              {activeTab === "settings" && "Genel Site Ayarları"}
               {activeTab === "content" && "Ana Sayfa Yönetimi"}
               {activeTab === "about" && "Hakkımızda Sayfası"}
               {activeTab === "testimonials" && "Müşteri Yorumları"}
@@ -239,6 +244,36 @@ export default function AdminDashboard() {
             {isSaving ? "Kaydediliyor..." : isSaved ? "Kaydedildi" : "Değişiklikleri Kaydet"}
           </button>
         </header>
+
+        {activeTab === "settings" && (
+          <section className="bg-background rounded-3xl border border-border p-8 shadow-sm">
+            <h3 className="text-lg font-bold mb-6">Logo ve Marka Kimliği</h3>
+            <div className="max-w-md space-y-6">
+              <div className="space-y-4">
+                <label className="text-xs font-bold uppercase text-muted-foreground block">Firma Logosu</label>
+                <div className="relative w-32 h-32 bg-secondary/10 rounded-2xl border border-border overflow-hidden group">
+                  {logo ? (
+                    <Image src={logo} alt="Logo" fill className="object-contain p-4" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-primary font-bold text-4xl">D</div>
+                  )}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <label className="cursor-pointer bg-white text-black p-2 rounded-lg">
+                      <Upload className="w-4 h-4" />
+                      <input 
+                        type="file" 
+                        className="hidden" 
+                        accept="image/*"
+                        onChange={(e) => handleFileUpload(e, "logo")}
+                      />
+                    </label>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">Önerilen: Şeffaf arka planlı PNG (512x512px)</p>
+              </div>
+            </div>
+          </section>
+        )}
 
         {activeTab === "content" && (
           <div className="space-y-8">
