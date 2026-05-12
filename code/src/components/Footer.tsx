@@ -1,13 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, ShieldCheck } from "lucide-react";
+import { KVKK_CONTENT } from "@/data/kvkk-content";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export default function Footer() {
   const { data: content } = useSWR("/api/content", fetcher);
+  const [isKvkkOpen, setIsKvkkOpen] = useState(false);
   
   const contact = content?.contact || {
     address: "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara",
@@ -55,11 +60,56 @@ export default function Footer() {
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
           <p>© 2026 DIPOL LTD. ŞTİ. Tüm Hakları Saklıdır.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-primary">Kullanım Koşulları</a>
+            <button 
+              onClick={() => setIsKvkkOpen(true)}
+              className="hover:text-primary transition-colors"
+            >
+              KVKK Bildirimi
+            </button>
             <a href="#" className="hover:text-primary">Gizlilik Politikası</a>
           </div>
         </div>
       </div>
+
+      {/* KVKK Modal */}
+      <AnimatePresence>
+        {isKvkkOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="bg-background rounded-[2.5rem] border border-border shadow-2xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden"
+            >
+              <div className="p-8 border-b border-border flex justify-between items-center bg-secondary/10 shrink-0">
+                <div className="flex items-center gap-3 text-primary">
+                  <ShieldCheck className="w-6 h-6" />
+                  <h3 className="text-xl font-bold">KVKK Aydınlatma Metni</h3>
+                </div>
+                <button 
+                  onClick={() => setIsKvkkOpen(false)} 
+                  className="p-2 hover:bg-secondary rounded-full transition-all"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-10 overflow-y-auto prose prose-sm dark:prose-invert max-w-none">
+                <div className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
+                  {KVKK_CONTENT}
+                </div>
+              </div>
+              <div className="p-6 border-t border-border bg-secondary/5 text-center shrink-0">
+                <button 
+                  onClick={() => setIsKvkkOpen(false)}
+                  className="bg-primary text-white px-10 py-3 rounded-xl font-bold hover:shadow-lg transition-all"
+                >
+                  Anladım
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </footer>
   );
 }
