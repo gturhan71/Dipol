@@ -89,7 +89,7 @@ export default function About() {
               className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl mt-12 lg:mt-0"
             >
               <Image 
-                src="/equipment-close.png" 
+                src={about.image || "/equipment-close.png"} 
                 alt="Dipol Office" 
                 fill 
                 className="object-cover"

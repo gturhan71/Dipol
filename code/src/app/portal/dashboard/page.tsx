@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { 
   LayoutDashboard, 
@@ -21,17 +21,21 @@ import {
   MapPin,
   Mail,
   Zap,
-  MessageSquare
+  MessageSquare,
+  Upload,
+  Image as ImageIcon
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("content");
   const [heroTitle, setHeroTitle] = useState("");
   const [heroDesc, setHeroDesc] = useState("");
+  const [heroImage, setHeroImage] = useState("");
   const [categories, setCategories] = useState<any[]>([]);
-  const [about, setAbout] = useState<any>({ title: "", subtitle: "", description: "", vision: "", mission: "" });
+  const [about, setAbout] = useState<any>({ title: "", subtitle: "", description: "", vision: "", mission: "", image: "" });
   const [brands, setBrands] = useState<string[]>([]);
   const [contact, setContact] = useState<any>({ title: "", subtitle: "", address: "", phone: "", email: "", mapsQuery: "" });
   const [stats, setStats] = useState<any>({});
@@ -40,7 +44,10 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState<string | null>(null);
   const [editingCategory, setEditingCategory] = useState<any>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const auth = localStorage.getItem("dipol_admin_auth");
@@ -54,6 +61,7 @@ export default function AdminDashboard() {
       .then(data => {
         setHeroTitle(data.hero.title);
         setHeroDesc(data.hero.description);
+        setHeroImage(data.hero.image || "/hero-lab.png");
         setCategories(data.categories || []);
         setAbout(data.about || {});
         setBrands(data.brands || []);
@@ -80,7 +88,7 @@ export default function AdminDashboard() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          hero: { title: heroTitle, description: heroDesc },
+          hero: { title: heroTitle, description: heroDesc, image: heroImage },
           stats: stats,
           about: about,
           contact: contact,
@@ -98,6 +106,31 @@ export default function AdminDashboard() {
       console.error("Save error:", error);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: "hero" | "about") => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(target);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (target === "hero") setHeroImage(data.url);
+        if (target === "about") setAbout({ ...about, image: data.url });
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setUploadingImage(null);
     }
   };
 
@@ -215,24 +248,45 @@ export default function AdminDashboard() {
                 <h3 className="text-lg font-bold">Hero Bölümü</h3>
               </div>
               
-              <div className="grid gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-muted-foreground">Ana Başlık</label>
-                  <input 
-                    type="text" 
-                    value={heroTitle}
-                    onChange={(e) => setHeroTitle(e.target.value)}
-                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-semibold"
-                  />
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase text-muted-foreground">Ana Başlık</label>
+                    <input 
+                      type="text" 
+                      value={heroTitle}
+                      onChange={(e) => setHeroTitle(e.target.value)}
+                      className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-semibold"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase text-muted-foreground">Alt Açıklama</label>
+                    <textarea 
+                      rows={3}
+                      value={heroDesc}
+                      onChange={(e) => setHeroDesc(e.target.value)}
+                      className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-muted-foreground">Alt Açıklama</label>
-                  <textarea 
-                    rows={3}
-                    value={heroDesc}
-                    onChange={(e) => setHeroDesc(e.target.value)}
-                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"
-                  />
+
+                <div className="space-y-4">
+                  <label className="text-xs font-bold uppercase text-muted-foreground block">Hero Görseli</label>
+                  <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-secondary/5 group">
+                    <Image src={heroImage} alt="Hero" fill className="object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <label className="cursor-pointer bg-white text-black px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2">
+                        <Upload className="w-4 h-4" />
+                        {uploadingImage === "hero" ? "Yükleniyor..." : "Görsel Seç"}
+                        <input 
+                          type="file" 
+                          className="hidden" 
+                          accept="image/*"
+                          onChange={(e) => handleFileUpload(e, "hero")}
+                        />
+                      </label>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>
@@ -272,53 +326,79 @@ export default function AdminDashboard() {
           <div className="space-y-8">
             <section className="bg-background rounded-3xl border border-border p-8 shadow-sm">
               <h3 className="text-lg font-bold mb-6">Hakkımızda Sayfa İçeriği</h3>
-              <div className="grid gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-muted-foreground">Sayfa Başlığı</label>
-                  <input 
-                    type="text" 
-                    value={about.title}
-                    onChange={(e) => setAbout({...about, title: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-muted-foreground">Kısa Alt Başlık</label>
-                  <textarea 
-                    rows={2}
-                    value={about.subtitle}
-                    onChange={(e) => setAbout({...about, subtitle: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase text-muted-foreground">Ana Açıklama Metni</label>
-                  <textarea 
-                    rows={4}
-                    value={about.description}
-                    onChange={(e) => setAbout({...about, description: e.target.value})}
-                    className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
-                  />
-                </div>
-                <div className="grid md:grid-cols-2 gap-6 border-t border-border pt-6">
+              <div className="grid lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase text-muted-foreground">Vizyonumuz</label>
-                    <textarea 
-                      rows={3}
-                      value={about.vision}
-                      onChange={(e) => setAbout({...about, vision: e.target.value})}
+                    <label className="text-xs font-bold uppercase text-muted-foreground">Sayfa Başlığı</label>
+                    <input 
+                      type="text" 
+                      value={about.title}
+                      onChange={(e) => setAbout({...about, title: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase text-muted-foreground">Misyonumuz</label>
+                    <label className="text-xs font-bold uppercase text-muted-foreground">Kısa Alt Başlık</label>
                     <textarea 
-                      rows={3}
-                      value={about.mission}
-                      onChange={(e) => setAbout({...about, mission: e.target.value})}
+                      rows={2}
+                      value={about.subtitle}
+                      onChange={(e) => setAbout({...about, subtitle: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase text-muted-foreground">Ana Açıklama Metni</label>
+                    <textarea 
+                      rows={4}
+                      value={about.description}
+                      onChange={(e) => setAbout({...about, description: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-xs font-bold uppercase text-muted-foreground block">Hakkımızda Görseli</label>
+                  <div className="relative aspect-video rounded-2xl overflow-hidden border border-border bg-secondary/5 group">
+                    {about.image ? (
+                      <Image src={about.image} alt="About" fill className="object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground"><ImageIcon className="w-10 h-10" /></div>
+                    )}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <label className="cursor-pointer bg-white text-black px-4 py-2 rounded-xl font-bold text-sm flex items-center gap-2">
+                        <Upload className="w-4 h-4" />
+                        {uploadingImage === "about" ? "Yükleniyor..." : "Görsel Seç"}
+                        <input 
+                          type="file" 
+                          className="hidden" 
+                          accept="image/*"
+                          onChange={(e) => handleFileUpload(e, "about")}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 border-t border-border pt-6 mt-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Vizyonumuz</label>
+                  <textarea 
+                    rows={3}
+                    value={about.vision}
+                    onChange={(e) => setAbout({...about, vision: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Misyonumuz</label>
+                  <textarea 
+                    rows={3}
+                    value={about.mission}
+                    onChange={(e) => setAbout({...about, mission: e.target.value})}
+                    className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
+                  />
                 </div>
               </div>
             </section>
