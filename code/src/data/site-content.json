@@ -1,0 +1,69 @@
+{
+  "hero": {
+    "title": "Bilimin Geleceğini Birlikte Şekillendirelim",
+    "description": "Dünyanın önde gelen markalarının laboratuvar cihazları, sarf malzemeleri ve yedek parçalarını Türkiye'ye taşıyoruz.",
+    "image": "/hero-lab.png"
+  },
+  "stats": {
+    "experience": "20+ Yıl",
+    "clients": "1000+",
+    "brands": "50+ Global",
+    "support": "7/24 Teknik"
+  },
+  "about": {
+    "title": "Hakkımızda",
+    "subtitle": "Dipol Ltd. Şti., laboratuvar dünyasının ihtiyaçlarını en üst düzeyde karşılamak amacıyla Ankara merkezli kurulmuş, sektörün öncü firmalarından biridir.",
+    "description": "20 yılı aşkın tecrübemizle, Türkiye'nin dört bir yanındaki üniversitelere, araştırma merkezlerine ve özel laboratuvarlara en kaliteli ekipmanları sağlıyoruz.",
+    "vision": "Tüm müşterilerimiz için ayrıcalığın bir standart hale gelmesi ve güvenli, etik değerlere bağlı bir çalışma ortamı yaratmak.",
+    "mission": "Sürdürülebilir üretkenlik ve uzun vadeli ilişkiler oluşturmak için doğrudan ve şeffaf iletişim kurarak en iyi çözümleri sunmak.",
+    "image": "/equipment-close.png"
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Sorularınız, teknik destek talepleriniz veya fiyat teklifi almak için bize ulaşın.",
+    "address": "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara",
+    "phone": "0312 428 88 06",
+    "email": "info@dipolltd.com",
+    "mapsQuery": "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya Ankara"
+  },
+  "testimonials": [
+    {
+      "id": "1",
+      "name": "Dr. Ayşe Yılmaz",
+      "role": "Üniversite Araştırma Görevlisi",
+      "comment": "Dipol'den aldığımız santrifüj cihazları laboratuvarımızın verimliliğini %40 artırdı. Teknik destek ekibi de çok hızlı.",
+      "date": "2026-04-12"
+    },
+    {
+      "id": "2",
+      "name": "Mehmet Can",
+      "role": "Özel Lab Yöneticisi",
+      "comment": "Sarf malzemesi tedariğinde Ankara'daki en güvenilir çözüm ortağımız. Kalite ve hız bir arada.",
+      "date": "2026-05-01"
+    }
+  ],
+  "brands": ["Hermle", "Branson", "Geneon", "Kisker", "Atago", "Esco", "GFL"],
+  "categories": [
+    {
+      "id": "consumables",
+      "name": "Laboratuvar Sarfları",
+      "description": "Pipetler, cam malzemeler ve örnek toplama kapları.",
+      "icon": "Beaker",
+      "items": ["Pipetler", "Cam Sarf Malzemeleri", "Örnek Toplama Kapları", "Analitik Laboratuvar Sarfları"]
+    },
+    {
+      "id": "equipment",
+      "name": "Cihazlar & Ekipman",
+      "description": "Test cihazları ve laboratuvar ekipman yedek parçaları.",
+      "icon": "Settings",
+      "items": ["Laboratuvar Ekipmanları", "Test Cihazları", "Ekipman Yedek Parçaları"]
+    },
+    {
+      "id": "safety",
+      "name": "Özel Ürünler",
+      "description": "İş güvenliği ve kriminal sarf malzemeleri.",
+      "icon": "ShieldCheck",
+      "items": ["İş Güvenliği Ekipmanları", "Kriminal Sarf Malzemeleri", "Özel Amaçlı Üretimler"]
+    }
+  ]
+}

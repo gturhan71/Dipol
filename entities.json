@@ -1,0 +1,39 @@
+{
+  "categories": [
+    {
+      "id": "consumables",
+      "name": "Laboratuvar Sarfları",
+      "description": "Pipetler, cam malzemeler ve örnek toplama kapları.",
+      "icon": "Beaker",
+      "items": [
+        "Pipetler",
+        "Cam Sarf Malzemeleri",
+        "Örnek Toplama Kapları",
+        "Analitik Laboratuvar Sarfları"
+      ]
+    },
+    {
+      "id": "equipment",
+      "name": "Cihazlar & Ekipman",
+      "description": "Test cihazları ve laboratuvar ekipman yedek parçaları.",
+      "icon": "Settings",
+      "items": [
+        "Laboratuvar Ekipmanları",
+        "Test Cihazları",
+        "Ekipman Yedek Parçaları"
+      ]
+    },
+    {
+      "id": "safety",
+      "name": "Özel Ürünler",
+      "description": "İş güvenliği ve kriminal sarf malzemeleri.",
+      "icon": "ShieldCheck",
+      "items": [
+        "İş Güvenliği Ekipmanları",
+        "Kriminal Sarf Malzemeleri",
+        "Özel Amaçlı Üretimler"
+      ]
+    }
+  ],
+  "brands": ["Hermle", "Branson", "Geneon", "Kisker", "Atago", "Esco", "GFL"]
+}
