@@ -14,6 +14,8 @@
 - Implemented Global SEO: TR/EN metadata in `layout.tsx`, added dynamic `robots.ts` and `sitemap.ts`.
 - Developed Portal-based SEO Management: Added "SEO Yönetimi" tab to Admin Dashboard, dynamic metadata fetching via `generateMetadata` from `site-content.json`.
 - Integrated Google Tag Manager (GTM) and GA4: Scripts added to `layout.tsx`, IDs are manageable through the Portal.
+- **Implemented Full i18n**: Migrated `site-content.json` to `{ tr, en }` structure, updated `page.tsx`, `Navbar.tsx`, and Admin Portal to handle bilingual content.
+- **Added API Rate Limiting**: Implemented IP-based rate limiter in `api/content/route.ts` to prevent brute-force attacks.
 - Syncing changes to GitHub.
 
 

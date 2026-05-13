@@ -33,8 +33,8 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("content");
   const [logo, setLogo] = useState("");
-  const [heroTitle, setHeroTitle] = useState("");
-  const [heroDesc, setHeroDesc] = useState("");
+  const [heroTitle, setHeroTitle] = useState({ tr: "", en: "" });
+  const [heroDesc, setHeroDesc] = useState({ tr: "", en: "" });
   const [heroImage, setHeroImage] = useState("");
   const [categories, setCategories] = useState<any[]>([]);
   const [about, setAbout] = useState<any>({ title: "", subtitle: "", description: "", vision: "", mission: "", image: "" });
@@ -71,8 +71,8 @@ export default function AdminDashboard() {
       .then(data => {
         setLogo(data.logo || "");
         setSeo(data.seo || { title: "", description: "", keywords: "", en: { title: "", description: "", keywords: "" } });
-        setHeroTitle(data.hero.title);
-        setHeroDesc(data.hero.description);
+        setHeroTitle(data.hero.title || { tr: "", en: "" });
+        setHeroDesc(data.hero.description || { tr: "", en: "" });
         setHeroImage(data.hero.image || "/hero-lab.png");
         setCategories(data.categories || []);
         setAbout(data.about || {});
@@ -431,24 +431,47 @@ export default function AdminDashboard() {
               
               <div className="grid lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase text-muted-foreground">Ana Başlık</label>
-                    <input 
-                      type="text" 
-                      value={heroTitle}
-                      onChange={(e) => setHeroTitle(e.target.value)}
-                      className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-semibold"
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase text-muted-foreground">Ana Başlık (TR)</label>
+                      <input 
+                        type="text" 
+                        value={heroTitle?.tr || ""}
+                        onChange={(e) => setHeroTitle({ ...heroTitle, tr: e.target.value })}
+                        className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-semibold"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase text-muted-foreground">Main Title (EN)</label>
+                      <input 
+                        type="text" 
+                        value={heroTitle?.en || ""}
+                        onChange={(e) => setHeroTitle({ ...heroTitle, en: e.target.value })}
+                        className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-semibold"
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase text-muted-foreground">Alt Açıklama</label>
-                    <textarea 
-                      rows={3}
-                      value={heroDesc}
-                      onChange={(e) => setHeroDesc(e.target.value)}
-                      className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase text-muted-foreground">Alt Açıklama (TR)</label>
+                      <textarea 
+                        rows={3}
+                        value={heroDesc?.tr || ""}
+                        onChange={(e) => setHeroDesc({ ...heroDesc, tr: e.target.value })}
+                        className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold uppercase text-muted-foreground">Subtitle (EN)</label>
+                      <textarea 
+                        rows={3}
+                        value={heroDesc?.en || ""}
+                        onChange={(e) => setHeroDesc({ ...heroDesc, en: e.target.value })}
+                        className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none"
+                      />
+                    </div>
                   </div>
+                </div>
                 </div>
 
                 <div className="space-y-4">

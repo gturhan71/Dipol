@@ -9,7 +9,7 @@ import useSWR from "swr";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-export default function Navbar() {
+export default function Navbar({ lang = "tr", setLang }: { lang?: "tr" | "en", setLang?: (lang: "tr" | "en") => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -69,24 +69,29 @@ export default function Navbar() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">Ana Sayfa</Link>
-              <Link href="/products" className="text-sm font-medium hover:text-primary transition-colors">Ürünler</Link>
-              <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">Hakkımızda</Link>
-              <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">İletişim</Link>
+              <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "Ana Sayfa" : "Home"}</Link>
+              <Link href="/products" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "Ürünler" : "Products"}</Link>
+              <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "Hakkımızda" : "About Us"}</Link>
+              <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "İletişim" : "Contact"}</Link>
             </div>
 
             {/* Right Side */}
-            <div className="hidden md:flex items-center gap-6">
-              <button className="p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground hover:text-primary">
-                <Search className="w-5 h-5" />
-              </button>
-              <div className="h-4 w-[1px] bg-border" />
+            <div className="hidden md:flex items-center gap-4">
+              {setLang && (
+                <button 
+                  onClick={() => setLang(lang === "tr" ? "en" : "tr")} 
+                  className="flex items-center gap-1.5 p-2 hover:bg-secondary rounded-xl transition-colors text-sm font-bold border border-transparent hover:border-border"
+                >
+                  <Globe className="w-4 h-4" /> {lang === "tr" ? "EN" : "TR"}
+                </button>
+              )}
+              <div className="h-4 w-[1px] bg-border mx-2" />
               <button 
                 onClick={() => setIsQuoteModalOpen(true)}
                 className="flex items-center gap-2 text-sm font-bold bg-primary text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95"
               >
                 <Mail className="w-4 h-4" />
-                Teklif Al
+                {lang === "tr" ? "Teklif Al" : "Get Quote"}
               </button>
             </div>
 
@@ -109,10 +114,10 @@ export default function Navbar() {
               className="md:hidden bg-background border-b border-border overflow-hidden"
             >
               <div className="px-4 pt-2 pb-6 space-y-2">
-                <Link href="/" className="block px-3 py-4 text-base font-medium border-b border-border/50">Ana Sayfa</Link>
-                <Link href="/products" className="block px-3 py-4 text-base font-medium border-b border-border/50">Ürünler</Link>
-                <Link href="/about" className="block px-3 py-4 text-base font-medium border-b border-border/50">Hakkımızda</Link>
-                <Link href="/contact" className="block px-3 py-4 text-base font-medium border-b border-border/50">İletişim</Link>
+                <Link href="/" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "Ana Sayfa" : "Home"}</Link>
+                <Link href="/products" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "Ürünler" : "Products"}</Link>
+                <Link href="/about" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "Hakkımızda" : "About Us"}</Link>
+                <Link href="/contact" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "İletişim" : "Contact"}</Link>
                 <div className="pt-4">
                   <button 
                     onClick={() => {
