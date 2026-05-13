@@ -385,6 +385,36 @@ export default function AdminDashboard() {
                   />
                 </div>
               </div>
+            <section className="bg-background rounded-3xl border border-border p-8 shadow-sm">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <h3 className="text-lg font-bold">Analytics & Tracking</h3>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Google Tag Manager ID</label>
+                  <input 
+                    type="text" 
+                    placeholder="GTM-XXXXXXX"
+                    value={seo.analytics?.gtmId}
+                    onChange={(e) => setSeo({...seo, analytics: {...seo.analytics, gtmId: e.target.value}})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 font-mono"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Google Analytics 4 (GA4) ID</label>
+                  <input 
+                    type="text" 
+                    placeholder="G-XXXXXXX"
+                    value={seo.analytics?.gaId}
+                    onChange={(e) => setSeo({...seo, analytics: {...seo.analytics, gaId: e.target.value}})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 font-mono"
+                  />
+                </div>
+              </div>
+              <p className="mt-4 text-[10px] text-muted-foreground bg-secondary/5 p-4 rounded-xl">
+                <strong>Not:</strong> Değişiklikler kaydedildikten sonra tüm sayfalarda otomatik olarak aktifleşecektir. GTM ID genellikle "GTM-" ile, GA4 ID ise "G-" ile başlar.
+              </p>
             </section>
           </div>
         )}

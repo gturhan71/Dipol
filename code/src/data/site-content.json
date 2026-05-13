@@ -7,8 +7,13 @@
       "title": "DIPOL LTD. | Laboratory Solutions",
       "description": "Turkey's leading distributor and solution partner for world-renowned laboratory equipment, consumables, and spare parts.",
       "keywords": "laboratory equipment, consumables, dipol ltd, ankara laboratory, scientific equipment"
+    },
+    "analytics": {
+      "gtmId": "GTM-XXXXXXX",
+      "gaId": "G-XXXXXXX"
     }
   },
+
   "logo": "/uploads/1778617758935-302119036-dipol_logo.jpg",
 
   "hero": {

@@ -20,9 +20,10 @@ Dipol Ltd. web sitesi, kurumsal kimliği korunarak en güncel teknolojilerle (Ne
 - `memory.md`, `gitrepo.md`: Proje takibi ve dokümantasyon.
 
 ## 🚀 Mevcut Durum
-- **Admin Portal**: `/portal` altında tam yetkilendirmeli yönetim paneli (SEO, içerik ve görsel yönetimi).
-- **Dinamik SEO**: Anahtar kelimeler, başlıklar ve açıklamalar portal üzerinden TR/EN olarak yönetilebilir ve anında yayına alınır.
+- **Dinamik SEO & Analytics**: Anahtar kelimeler, GTM ve GA4 ID'leri portal üzerinden yönetilebilir.
+- **Takip & Analiz**: Google Tag Manager ve Google Analytics 4 (GA4) entegrasyonu tamamlandı.
 - **Arama Motoru Optimizasyonu**: Dinamik `robots.ts` ve `sitemap.ts` yapılandırıldı.
+
 
 - **Harding & Security**: Sunucu tarafı JWT-like yetkilendirme ve API koruması.
 - **Altyapı**: Geliştirme sunucusu `localhost:3005` üzerinde sorunsuz çalışıyor.
