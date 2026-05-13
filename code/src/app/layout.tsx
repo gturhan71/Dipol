@@ -28,9 +28,9 @@ async function getSiteData() {
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getSiteData();
   const seo = data?.seo || {
-    title: "DIPOL LTD. ŞTİ.",
-    description: "Laboratuvar Çözümleri",
-    keywords: ""
+    title: { tr: "DIPOL LTD. ŞTİ.", en: "DIPOL LTD." },
+    description: { tr: "Laboratuvar Çözümleri", en: "Laboratory Solutions" },
+    keywords: { tr: "", en: "" }
   };
 
   const siteUrl = "https://www.dipolltd.com";
@@ -39,11 +39,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(siteUrl),
     title: {
-      default: seo.title,
-      template: `%s | ${seo.title.split('|')[0].trim()}`
+      default: seo.title.tr,
+      template: `%s | ${seo.title.tr.split('|')[0].trim()}`
     },
-    description: seo.description,
-    keywords: seo.keywords.split(',').map((k: string) => k.trim()),
+    description: seo.description.tr,
+    keywords: seo.keywords.tr.split(',').map((k: string) => k.trim()),
     alternates: {
       canonical: "/",
       languages: {
@@ -56,14 +56,14 @@ export async function generateMetadata(): Promise<Metadata> {
       locale: "tr_TR",
       alternateLocale: ["en_US"],
       url: siteUrl,
-      title: seo.title,
-      description: seo.description,
+      title: seo.title.tr,
+      description: seo.description.tr,
       images: [{ url: ogImage }],
     },
     twitter: {
       card: "summary_large_image",
-      title: seo.title,
-      description: seo.description,
+      title: seo.title.tr,
+      description: seo.description.tr,
       images: [ogImage],
     },
     robots: {
@@ -72,6 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
     }
   };
 }
+
 
 
 
