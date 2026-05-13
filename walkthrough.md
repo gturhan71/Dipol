@@ -20,9 +20,11 @@ Dipol Ltd. web sitesi, kurumsal kimliği korunarak en güncel teknolojilerle (Ne
 - `memory.md`, `gitrepo.md`: Proje takibi ve dokümantasyon.
 
 ## 🚀 Mevcut Durum
-- Hero section ve ana sayfa iskeleti tamamlandı.
-- Responsive navbar ve özellikler bölümü eklendi.
-- SEO meta dataları yapılandırıldı.
+- **Admin Portal**: `/portal` altında tam yetkilendirmeli yönetim paneli (JWT-like auth).
+- **Dinamik CMS**: Ürün ve içerik yönetimi için gerçek zamanlı API entegrasyonu.
+- **Güvenli Görsel Yükleme**: Kimlik doğrulamalı ve sanitize edilmiş görsel yönetim sistemi.
+- **Modern UI/UX**: Tüm sayfalar (About, Products, Contact) Next.js 16 standartlarında tamamlandı.
+- **Altyapı**: Geliştirme sunucusu `localhost:3005` üzerinde sorunsuz çalışıyor.
 
 ### Önizleme
 ![Hero Section](/Users/gokhan_turhan/.gemini/antigravity/brain/ace6072b-8002-400a-a364-eaf43294a6e1/dipol_hero_lab_1778584128413.png)
@@ -32,6 +34,8 @@ Dipol Ltd. web sitesi, kurumsal kimliği korunarak en güncel teknolojilerle (Ne
 *Yüksek kaliteli ekipman detayı*
 
 ## 🔜 Sırada Ne Var?
-1. Ürün kategorilerinin detaylandırılması.
-2. Hakkımızda ve İletişim sayfalarının içerik aktarımı.
-3. Mağaza (Shop) entegrasyonu.
+1. **E-Ticaret Entegrasyonu**: Mağaza ve ödeme sistemlerinin yapılandırılması.
+2. **Global SEO**: Çok dilli destek ve gelişmiş meta-tag optimizasyonu.
+3. **Analytics**: Google Tag Manager ve GA4 entegrasyonu.
+4. **Deployment**: Vercel/Cloud Run üzerine üretim yayını.
+

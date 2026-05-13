@@ -9,4 +9,7 @@
 
 ## Session: 2026-05-13
 - Finalizing modernization and security hardening.
+- Fixed dev server: Port 3005 was stuck, killed existing process and restarted `pnpm dev -p 3005`.
+- Updated `walkthrough.md` to reflect Admin Portal, CMS, and Security features.
 - Syncing changes to GitHub.
+
