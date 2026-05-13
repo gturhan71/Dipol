@@ -472,8 +472,6 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 </div>
-                </div>
-
                 <div className="space-y-4">
                   <label className="text-xs font-bold uppercase text-muted-foreground block">Hero Görseli</label>
                   <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-secondary/5 group">
@@ -536,7 +534,7 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Sayfa Başlığı</label>
                     <input 
                       type="text" 
-                      value={about.title}
+                      value={typeof about.title === 'object' ? about.title?.tr || "" : about.title}
                       onChange={(e) => setAbout({...about, title: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
@@ -545,7 +543,7 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Kısa Alt Başlık</label>
                     <textarea 
                       rows={2}
-                      value={about.subtitle}
+                      value={typeof about.subtitle === 'object' ? about.subtitle?.tr || "" : about.subtitle}
                       onChange={(e) => setAbout({...about, subtitle: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
@@ -554,7 +552,7 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Ana Açıklama Metni</label>
                     <textarea 
                       rows={4}
-                      value={about.description}
+                      value={typeof about.description === 'object' ? about.description?.tr || "" : about.description}
                       onChange={(e) => setAbout({...about, description: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
@@ -590,7 +588,7 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground">Vizyonumuz</label>
                   <textarea 
                     rows={3}
-                    value={about.vision}
+                    value={typeof about.vision === 'object' ? about.vision?.tr || "" : about.vision}
                     onChange={(e) => setAbout({...about, vision: e.target.value})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />
@@ -599,7 +597,7 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground">Misyonumuz</label>
                   <textarea 
                     rows={3}
-                    value={about.mission}
+                    value={typeof about.mission === 'object' ? about.mission?.tr || "" : about.mission}
                     onChange={(e) => setAbout({...about, mission: e.target.value})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />
@@ -654,7 +652,7 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Sayfa Başlığı</label>
                     <input 
                       type="text" 
-                      value={contact.title}
+                      value={typeof contact.title === 'object' ? contact.title?.tr || "" : contact.title}
                       onChange={(e) => setContact({...contact, title: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
@@ -663,7 +661,7 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Alt Başlık</label>
                     <input 
                       type="text" 
-                      value={contact.subtitle}
+                      value={typeof contact.subtitle === 'object' ? contact.subtitle?.tr || "" : contact.subtitle}
                       onChange={(e) => setContact({...contact, subtitle: e.target.value})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
@@ -673,7 +671,7 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground">Adres</label>
                   <textarea 
                     rows={2}
-                    value={contact.address}
+                    value={typeof contact.address === 'object' ? contact.address?.tr || "" : contact.address}
                     onChange={(e) => setContact({...contact, address: e.target.value})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Beaker, Zap, Settings, ShieldCheck, CheckCircle2 } from "lucide-react";
@@ -16,8 +17,10 @@ const IconMap = {
   Zap
 };
 
+import { useLanguage } from "@/components/LanguageProvider";
+
 export default function Home() {
-  const [lang, setLang] = useState<"tr" | "en">("tr");
+  const { lang, t } = useLanguage();
   const { data: content } = useSWR("/api/content", fetcher, {
     refreshInterval: 1000,
     fallbackData: {
@@ -28,11 +31,9 @@ export default function Home() {
     }
   });
 
-  const t = (obj: any) => obj?.[lang] || obj?.tr || "";
-
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar lang={lang} setLang={setLang} />
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">

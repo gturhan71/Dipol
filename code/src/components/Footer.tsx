@@ -51,7 +51,7 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-6">İletişim</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
-              <li>{contact.address}</li>
+              <li>{typeof contact.address === 'object' ? contact.address.tr : contact.address}</li>
               <li>Tel: {contact.phone}</li>
               <li>Email: {contact.email}</li>
             </ul>

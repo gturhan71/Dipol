@@ -76,6 +76,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 
+import { LanguageProvider } from "@/components/LanguageProvider";
 import Script from "next/script";
 
 export default async function RootLayout({
@@ -109,8 +110,8 @@ export default async function RootLayout({
         {analytics.gaId && (
           <>
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${analytics.gaId}`}
-              strategy="afterInteractive"
+               src={`https://www.googletagmanager.com/gtag/js?id=${analytics.gaId}`}
+               strategy="afterInteractive"
             />
             <Script
               id="ga-script"
@@ -141,7 +142,9 @@ export default async function RootLayout({
             />
           </noscript>
         )}
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );
