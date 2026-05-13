@@ -28,7 +28,13 @@ export default function Home() {
     }
   });
 
-  const t = (obj: any) => obj?.[lang] || obj?.tr || "";
+  const t = (obj: any) => {
+    if (!obj) return "";
+    if (typeof obj === "string") return obj;
+    if (obj[lang] !== undefined && obj[lang] !== "") return obj[lang];
+    if (obj.tr !== undefined) return obj.tr;
+    return "";
+  };
 
   return (
     <LazyMotion features={domAnimation}>

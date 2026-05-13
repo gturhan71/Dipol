@@ -20,7 +20,13 @@ export default function Footer({ lang = "tr" }: { lang?: "tr" | "en" }) {
     email: "info@dipolltd.com"
   };
 
-  const t = (obj: any) => obj?.[lang] || obj?.tr || obj || "";
+  const t = (obj: any) => {
+    if (!obj) return "";
+    if (typeof obj === "string") return obj;
+    if (obj[lang] !== undefined && obj[lang] !== "") return obj[lang];
+    if (obj.tr !== undefined) return obj.tr;
+    return "";
+  };
 
   return (
     <footer className="py-12 border-t border-border bg-background">
