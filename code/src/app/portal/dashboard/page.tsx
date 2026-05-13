@@ -57,12 +57,6 @@ export default function AdminDashboard() {
   const [editingCategory, setEditingCategory] = useState<any>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("dipol_admin_auth");
-    if (!token) {
-      router.push("/portal/login");
-      return;
-    }
-
     fetch("/api/content")
       .then(res => {
         if (res.status === 401) throw new Error("Unauthorized");
@@ -84,19 +78,17 @@ export default function AdminDashboard() {
       })
       .catch(err => {
         console.error("Fetch error:", err);
-        localStorage.removeItem("dipol_admin_auth");
         router.push("/portal/login");
       });
   }, [router]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("dipol_admin_auth");
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
     router.push("/portal/login");
-  };
-
-  const getAuthHeader = () => {
-    const token = localStorage.getItem("dipol_admin_auth");
-    return token ? { "Authorization": `Bearer ${token}` } : {};
   };
 
   const handleSave = async () => {
@@ -105,8 +97,7 @@ export default function AdminDashboard() {
       const response = await fetch("/api/content", {
         method: "POST",
         headers: { 
-          "Content-Type": "application/json",
-          ...getAuthHeader()
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           seo: seo,
@@ -148,7 +139,6 @@ export default function AdminDashboard() {
     try {
       const res = await fetch("/api/upload", {
         method: "POST",
-        headers: { ...getAuthHeader() },
         body: formData,
       });
 
