@@ -43,6 +43,13 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<any>({});
   const [testimonials, setTestimonials] = useState<any[]>([]);
   
+  const [seo, setSeo] = useState<any>({ 
+    title: "", 
+    description: "", 
+    keywords: "", 
+    en: { title: "", description: "", keywords: "" } 
+  });
+  
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -63,6 +70,7 @@ export default function AdminDashboard() {
       })
       .then(data => {
         setLogo(data.logo || "");
+        setSeo(data.seo || { title: "", description: "", keywords: "", en: { title: "", description: "", keywords: "" } });
         setHeroTitle(data.hero.title);
         setHeroDesc(data.hero.description);
         setHeroImage(data.hero.image || "/hero-lab.png");
@@ -101,6 +109,7 @@ export default function AdminDashboard() {
           ...getAuthHeader()
         },
         body: JSON.stringify({
+          seo: seo,
           logo: logo,
           hero: { title: heroTitle, description: heroDesc, image: heroImage },
           stats: stats,
@@ -213,6 +222,7 @@ export default function AdminDashboard() {
         <nav className="space-y-2 flex-1">
           {[
             { id: "settings", icon: Settings, label: "Genel Ayarlar" },
+            { id: "seo", icon: Chrome, label: "SEO Yönetimi" },
             { id: "content", icon: FileText, label: "Ana Sayfa" },
             { id: "about", icon: Info, label: "Hakkımızda" },
             { id: "testimonials", icon: MessageSquare, label: "Yorumlar" },
@@ -250,6 +260,7 @@ export default function AdminDashboard() {
           <div>
             <h2 className="text-3xl font-bold tracking-tight uppercase">
               {activeTab === "settings" && "Genel Site Ayarları"}
+              {activeTab === "seo" && "Arama Motoru Ayarları (SEO)"}
               {activeTab === "content" && "Ana Sayfa Yönetimi"}
               {activeTab === "about" && "Hakkımızda Sayfası"}
               {activeTab === "testimonials" && "Müşteri Yorumları"}
@@ -300,6 +311,82 @@ export default function AdminDashboard() {
               </div>
             </div>
           </section>
+        )}
+
+        {activeTab === "seo" && (
+          <div className="space-y-8">
+            <section className="bg-background rounded-3xl border border-border p-8 shadow-sm">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <h3 className="text-lg font-bold">Türkçe SEO Ayarları</h3>
+              </div>
+              <div className="grid gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Site Başlığı (Title)</label>
+                  <input 
+                    type="text" 
+                    value={seo.title}
+                    onChange={(e) => setSeo({...seo, title: e.target.value})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 font-semibold"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Site Açıklaması (Meta Description)</label>
+                  <textarea 
+                    rows={3}
+                    value={seo.description}
+                    onChange={(e) => setSeo({...seo, description: e.target.value})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 resize-none"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Anahtar Kelimeler (Keywords - Virgülle ayırın)</label>
+                  <textarea 
+                    rows={3}
+                    value={seo.keywords}
+                    onChange={(e) => setSeo({...seo, keywords: e.target.value})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 resize-none"
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section className="bg-background rounded-3xl border border-border p-8 shadow-sm">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <h3 className="text-lg font-bold">English SEO Settings</h3>
+              </div>
+              <div className="grid gap-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Site Title</label>
+                  <input 
+                    type="text" 
+                    value={seo.en?.title}
+                    onChange={(e) => setSeo({...seo, en: {...seo.en, title: e.target.value}})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 font-semibold"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Meta Description</label>
+                  <textarea 
+                    rows={3}
+                    value={seo.en?.description}
+                    onChange={(e) => setSeo({...seo, en: {...seo.en, description: e.target.value}})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 resize-none"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase text-muted-foreground">Keywords (Comma separated)</label>
+                  <textarea 
+                    rows={3}
+                    value={seo.en?.keywords}
+                    onChange={(e) => setSeo({...seo, en: {...seo.en, keywords: e.target.value}})}
+                    className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 resize-none"
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
         )}
 
         {activeTab === "content" && (

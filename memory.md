@@ -12,6 +12,8 @@
 - Fixed dev server: Port 3005 was stuck, killed existing process and restarted `pnpm dev -p 3005`.
 - Updated `walkthrough.md` to reflect Admin Portal, CMS, and Security features.
 - Implemented Global SEO: TR/EN metadata in `layout.tsx`, added dynamic `robots.ts` and `sitemap.ts`.
+- Developed Portal-based SEO Management: Added "SEO Yönetimi" tab to Admin Dashboard, dynamic metadata fetching via `generateMetadata` from `site-content.json`.
 - Syncing changes to GitHub.
+
 
 
