@@ -22,9 +22,9 @@ import {
   Mail,
   Zap,
   MessageSquare,
+  Globe,
   Upload,
-  Image as ImageIcon,
-  Chrome
+  Image as ImageIcon
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -222,7 +222,7 @@ export default function AdminDashboard() {
         <nav className="space-y-2 flex-1">
           {[
             { id: "settings", icon: Settings, label: "Genel Ayarlar" },
-            { id: "seo", icon: Chrome, label: "SEO Yönetimi" },
+            { id: "seo", icon: Globe, label: "SEO Yönetimi" },
             { id: "content", icon: FileText, label: "Ana Sayfa" },
             { id: "about", icon: Info, label: "Hakkımızda" },
             { id: "testimonials", icon: MessageSquare, label: "Yorumlar" },
@@ -385,6 +385,8 @@ export default function AdminDashboard() {
                   />
                 </div>
               </div>
+            </section>
+
             <section className="bg-background rounded-3xl border border-border p-8 shadow-sm">
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
