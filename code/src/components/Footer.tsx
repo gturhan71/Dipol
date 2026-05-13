@@ -10,15 +10,17 @@ import { KVKK_CONTENT } from "@/data/kvkk-content";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
-export default function Footer() {
+export default function Footer({ lang = "tr" }: { lang?: "tr" | "en" }) {
   const { data: content } = useSWR("/api/content", fetcher);
   const [isKvkkOpen, setIsKvkkOpen] = useState(false);
   
   const contact = content?.contact || {
-    address: "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara",
+    address: { tr: "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara", en: "Asagiovecler Mah. 1325. St. No:13/B Cankaya / Ankara / Turkey" },
     phone: "0312 428 88 06",
     email: "info@dipolltd.com"
   };
+
+  const t = (obj: any) => obj?.[lang] || obj?.tr || obj || "";
 
   return (
     <footer className="py-12 border-t border-border bg-background">
@@ -36,37 +38,39 @@ export default function Footer() {
               <span className="font-bold text-xl tracking-tight">DIPOL</span>
             </Link>
             <p className="text-muted-foreground max-w-sm mb-6 text-sm leading-relaxed">
-              Laboratuvar cihazları ve sarf malzemelerinde 20 yılı aşkın tecrübe ile bilimsel çalışmalarınıza değer katıyoruz.
+              {lang === "tr" 
+                ? "Laboratuvar cihazları ve sarf malzemelerinde 20 yılı aşkın tecrübe ile bilimsel çalışmalarınıza değer katıyoruz."
+                : "Adding value to your scientific studies with over 20 years of experience in laboratory equipment and consumables."}
             </p>
           </div>
           <div>
-            <h4 className="font-bold mb-6">Hızlı Linkler</h4>
+            <h4 className="font-bold mb-6">{lang === "tr" ? "Hızlı Linkler" : "Quick Links"}</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
-              <li><Link href="/" className="hover:text-primary transition-colors">Ana Sayfa</Link></li>
-              <li><Link href="/products" className="hover:text-primary transition-colors">Ürünler</Link></li>
-              <li><Link href="/about" className="hover:text-primary transition-colors">Hakkımızda</Link></li>
-              <li><Link href="/contact" className="hover:text-primary transition-colors">İletişim</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors">{lang === "tr" ? "Ana Sayfa" : "Home"}</Link></li>
+              <li><Link href="/products" className="hover:text-primary transition-colors">{lang === "tr" ? "Ürünler" : "Products"}</Link></li>
+              <li><Link href="/about" className="hover:text-primary transition-colors">{lang === "tr" ? "Hakkımızda" : "About Us"}</Link></li>
+              <li><Link href="/contact" className="hover:text-primary transition-colors">{lang === "tr" ? "İletişim" : "Contact"}</Link></li>
             </ul>
           </div>
           <div>
-            <h4 className="font-bold mb-6">İletişim</h4>
+            <h4 className="font-bold mb-6">{lang === "tr" ? "İletişim" : "Contact"}</h4>
             <ul className="space-y-4 text-sm text-muted-foreground">
-              <li>{contact.address}</li>
+              <li>{t(contact.address)}</li>
               <li>Tel: {contact.phone}</li>
               <li>Email: {contact.email}</li>
             </ul>
           </div>
         </div>
         <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© 2026 DIPOL LTD. ŞTİ. Tüm Hakları Saklıdır.</p>
+          <p>© 2026 DIPOL LTD. {lang === "tr" ? "Tüm Hakları Saklıdır." : "All Rights Reserved."}</p>
           <div className="flex gap-6">
             <button 
               onClick={() => setIsKvkkOpen(true)}
               className="hover:text-primary transition-colors"
             >
-              KVKK Bildirimi
+              {lang === "tr" ? "KVKK Bildirimi" : "Privacy Policy"}
             </button>
-            <a href="#" className="hover:text-primary">Gizlilik Politikası</a>
+            <a href="#" className="hover:text-primary">{lang === "tr" ? "Gizlilik Politikası" : "Terms of Service"}</a>
           </div>
         </div>
       </div>

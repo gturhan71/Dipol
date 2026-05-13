@@ -20,8 +20,9 @@ export default function LoginPage() {
     setError("");
 
     try {
-      // Firebase Authentication
-      const userCredential = await signInWithEmailAndPassword(auth, username, password);
+      // Firebase Authentication requires email format
+      const loginEmail = username.includes("@") ? username : `${username}@dipolltd.com`;
+      const userCredential = await signInWithEmailAndPassword(auth, loginEmail, password);
       const idToken = await userCredential.user.getIdToken();
 
       // Create session cookie via API
