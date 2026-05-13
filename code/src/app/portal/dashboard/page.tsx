@@ -56,6 +56,10 @@ export default function AdminDashboard() {
   const [uploadingImage, setUploadingImage] = useState<string | null>(null);
   const [editingCategory, setEditingCategory] = useState<any>(null);
 
+  const getTr = (val: any) => typeof val === 'string' ? val : (val?.tr || "");
+  const setTr = (obj: any, val: string) => typeof obj === 'string' ? val : { ...obj, tr: val };
+
+
   useEffect(() => {
     fetch("/api/content")
       .then(res => {
@@ -502,7 +506,7 @@ export default function AdminDashboard() {
                       <div className="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center">
                         <FileText className="w-5 h-5 text-muted-foreground" />
                       </div>
-                      <h4 className="font-bold">{cat.name}</h4>
+                      <h4 className="font-bold">{getTr(cat.name)}</h4>
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => setEditingCategory(cat)} className="p-2 hover:bg-secondary rounded-lg"><Edit3 className="w-4 h-4" /></button>
@@ -525,8 +529,8 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Sayfa Başlığı</label>
                     <input 
                       type="text" 
-                      value={about.title}
-                      onChange={(e) => setAbout({...about, title: e.target.value})}
+                      value={getTr(about.title)}
+                      onChange={(e) => setAbout({...about, title: setTr(about.title, e.target.value)})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
@@ -534,8 +538,8 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Kısa Alt Başlık</label>
                     <textarea 
                       rows={2}
-                      value={about.subtitle}
-                      onChange={(e) => setAbout({...about, subtitle: e.target.value})}
+                      value={getTr(about.subtitle)}
+                      onChange={(e) => setAbout({...about, subtitle: setTr(about.subtitle, e.target.value)})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
@@ -543,8 +547,8 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Ana Açıklama Metni</label>
                     <textarea 
                       rows={4}
-                      value={about.description}
-                      onChange={(e) => setAbout({...about, description: e.target.value})}
+                      value={getTr(about.description)}
+                      onChange={(e) => setAbout({...about, description: setTr(about.description, e.target.value)})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
@@ -579,8 +583,8 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground">Vizyonumuz</label>
                   <textarea 
                     rows={3}
-                    value={about.vision}
-                    onChange={(e) => setAbout({...about, vision: e.target.value})}
+                    value={getTr(about.vision)}
+                    onChange={(e) => setAbout({...about, vision: setTr(about.vision, e.target.value)})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />
                 </div>
@@ -588,8 +592,8 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground">Misyonumuz</label>
                   <textarea 
                     rows={3}
-                    value={about.mission}
-                    onChange={(e) => setAbout({...about, mission: e.target.value})}
+                    value={getTr(about.mission)}
+                    onChange={(e) => setAbout({...about, mission: setTr(about.mission, e.target.value)})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />
                 </div>
@@ -611,7 +615,7 @@ export default function AdminDashboard() {
                       </div>
                       <div>
                         <h4 className="font-bold text-sm">{t.name}</h4>
-                        <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{t.role} • {t.date}</p>
+                        <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">{getTr(t.role)} • {t.date}</p>
                       </div>
                     </div>
                     <button 
@@ -621,7 +625,7 @@ export default function AdminDashboard() {
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
-                  <p className="text-sm text-muted-foreground italic leading-relaxed">"{t.comment}"</p>
+                  <p className="text-sm text-muted-foreground italic leading-relaxed">"{getTr(t.comment)}"</p>
                 </div>
               ))}
               {testimonials.length === 0 && (
@@ -643,8 +647,8 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Sayfa Başlığı</label>
                     <input 
                       type="text" 
-                      value={contact.title}
-                      onChange={(e) => setContact({...contact, title: e.target.value})}
+                      value={getTr(contact.title)}
+                      onChange={(e) => setContact({...contact, title: setTr(contact.title, e.target.value)})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
@@ -652,8 +656,8 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Alt Başlık</label>
                     <input 
                       type="text" 
-                      value={contact.subtitle}
-                      onChange={(e) => setContact({...contact, subtitle: e.target.value})}
+                      value={getTr(contact.subtitle)}
+                      onChange={(e) => setContact({...contact, subtitle: setTr(contact.subtitle, e.target.value)})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
@@ -662,8 +666,8 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground">Adres</label>
                   <textarea 
                     rows={2}
-                    value={contact.address}
-                    onChange={(e) => setContact({...contact, address: e.target.value})}
+                    value={getTr(contact.address)}
+                    onChange={(e) => setContact({...contact, address: setTr(contact.address, e.target.value)})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />
                 </div>
@@ -672,8 +676,8 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">Telefon</label>
                     <input 
                       type="text" 
-                      value={contact.phone}
-                      onChange={(e) => setContact({...contact, phone: e.target.value})}
+                      value={getTr(contact.phone)}
+                      onChange={(e) => setContact({...contact, phone: setTr(contact.phone, e.target.value)})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
@@ -681,8 +685,8 @@ export default function AdminDashboard() {
                     <label className="text-xs font-bold uppercase text-muted-foreground">E-posta</label>
                     <input 
                       type="email" 
-                      value={contact.email}
-                      onChange={(e) => setContact({...contact, email: e.target.value})}
+                      value={getTr(contact.email)}
+                      onChange={(e) => setContact({...contact, email: setTr(contact.email, e.target.value)})}
                       className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                     />
                   </div>
@@ -691,8 +695,8 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground">Google Maps Arama Terimi</label>
                   <input 
                     type="text" 
-                    value={contact.mapsQuery}
-                    onChange={(e) => setContact({...contact, mapsQuery: e.target.value})}
+                    value={getTr(contact.mapsQuery)}
+                    onChange={(e) => setContact({...contact, mapsQuery: setTr(contact.mapsQuery, e.target.value)})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />
                 </div>
@@ -761,8 +765,8 @@ export default function AdminDashboard() {
                   <label className="text-xs font-bold uppercase text-muted-foreground capitalize">{key}</label>
                   <input 
                     type="text" 
-                    value={stats[key]}
-                    onChange={(e) => setStats({...stats, [key]: e.target.value})}
+                    value={getTr(stats[key])}
+                    onChange={(e) => setStats({...stats, [key]: setTr(stats[key], e.target.value)})}
                     className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                   />
                 </div>
@@ -793,8 +797,8 @@ export default function AdminDashboard() {
                       <label className="text-xs font-bold uppercase text-muted-foreground">Kategori Adı</label>
                       <input 
                         type="text" 
-                        value={editingCategory.name}
-                        onChange={(e) => updateEditingCategory("name", e.target.value)}
+                        value={getTr(editingCategory.name)}
+                        onChange={(e) => updateEditingCategory("name", setTr(editingCategory.name, e.target.value))}
                         className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10"
                       />
                     </div>
@@ -802,8 +806,8 @@ export default function AdminDashboard() {
                       <label className="text-xs font-bold uppercase text-muted-foreground">Açıklama</label>
                       <textarea 
                         rows={2}
-                        value={editingCategory.description}
-                        onChange={(e) => updateEditingCategory("description", e.target.value)}
+                        value={getTr(editingCategory.description)}
+                        onChange={(e) => updateEditingCategory("description", setTr(editingCategory.description, e.target.value))}
                         className="w-full px-4 py-3 rounded-xl border border-border bg-secondary/10 resize-none"
                       />
                     </div>
