@@ -11,5 +11,7 @@
 - Finalizing modernization and security hardening.
 - Fixed dev server: Port 3005 was stuck, killed existing process and restarted `pnpm dev -p 3005`.
 - Updated `walkthrough.md` to reflect Admin Portal, CMS, and Security features.
+- Implemented Global SEO: TR/EN metadata in `layout.tsx`, added dynamic `robots.ts` and `sitemap.ts`.
 - Syncing changes to GitHub.
+
 

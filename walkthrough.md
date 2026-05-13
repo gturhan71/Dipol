@@ -21,10 +21,11 @@ Dipol Ltd. web sitesi, kurumsal kimliği korunarak en güncel teknolojilerle (Ne
 
 ## 🚀 Mevcut Durum
 - **Admin Portal**: `/portal` altında tam yetkilendirmeli yönetim paneli (JWT-like auth).
-- **Dinamik CMS**: Ürün ve içerik yönetimi için gerçek zamanlı API entegrasyonu.
-- **Güvenli Görsel Yükleme**: Kimlik doğrulamalı ve sanitize edilmiş görsel yönetim sistemi.
-- **Modern UI/UX**: Tüm sayfalar (About, Products, Contact) Next.js 16 standartlarında tamamlandı.
+- **Global SEO**: Türkçe ve İngilizce dillerini kapsayan meta tanımlamaları (OG, Twitter, Keywords).
+- **Arama Motoru Optimizasyonu**: Dinamik `robots.ts` ve `sitemap.ts` yapılandırıldı.
+- **Harding & Security**: Sunucu tarafı JWT-like yetkilendirme ve API koruması.
 - **Altyapı**: Geliştirme sunucusu `localhost:3005` üzerinde sorunsuz çalışıyor.
+
 
 ### Önizleme
 ![Hero Section](/Users/gokhan_turhan/.gemini/antigravity/brain/ace6072b-8002-400a-a364-eaf43294a6e1/dipol_hero_lab_1778584128413.png)
