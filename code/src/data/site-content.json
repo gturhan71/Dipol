@@ -1,107 +1,115 @@
 {
   "seo": {
-    "title": "DIPOL LTD. ŞTİ. | Laboratuvar Çözümleri",
-    "description": "Laboratuvar cihazları, sarf malzemeleri ve yedek parçalarında dünyanın önde gelen markalarının Türkiye distribütörü ve çözüm ortağı.",
-    "keywords": "laboratuvar cihazları, laboratory equipment, sarf malzemeleri, consumables, dipol ltd, ankara laboratuvar",
-    "en": {
-      "title": "DIPOL LTD. | Laboratory Solutions",
-      "description": "Turkey's leading distributor and solution partner for world-renowned laboratory equipment, consumables, and spare parts.",
-      "keywords": "laboratory equipment, consumables, dipol ltd, ankara laboratory, scientific equipment"
+    "title": {
+      "tr": "DIPOL LTD. ŞTİ. | Laboratuvar Çözümleri",
+      "en": "DIPOL LTD. | Laboratory Solutions"
+    },
+    "description": {
+      "tr": "Laboratuvar cihazları, sarf malzemeleri ve yedek parçalarında dünyanın önde gelen markalarının Türkiye distribütörü ve çözüm ortağı.",
+      "en": "Turkey's leading distributor and solution partner for world-renowned laboratory equipment, consumables, and spare parts."
+    },
+    "keywords": {
+      "tr": "laboratuvar cihazları, sarf malzemeleri, dipol ltd, ankara laboratuvar, bilimsel ekipman",
+      "en": "laboratory equipment, consumables, dipol ltd, ankara laboratory, scientific equipment"
     },
     "analytics": {
       "gtmId": "GTM-XXXXXXX",
       "gaId": "G-XXXXXXX"
     }
   },
-
   "logo": "/uploads/1778617758935-302119036-dipol_logo.jpg",
-
   "hero": {
-    "title": "Bilimin Geleceğini Birlikte Şekillendirelim",
-    "description": "Dünyanın önde gelen markalarının laboratuvar cihazları, sarf malzemeleri ve yedek parçalarını Türkiye'ye taşıyoruz.",
+    "title": {
+      "tr": "Bilimin Geleceğini Birlikte Şekillendirelim",
+      "en": "Shaping the Future of Science Together"
+    },
+    "description": {
+      "tr": "Dünyanın önde gelen markalarının laboratuvar cihazları, sarf malzemeleri ve yedek parçalarını Türkiye'ye taşıyoruz.",
+      "en": "We bring laboratory equipment, consumables, and spare parts from the world's leading brands to Turkey."
+    },
     "image": "/hero-lab.png"
   },
   "stats": {
-    "experience": "20+ Yıl",
-    "clients": "1000+",
-    "brands": "50+ Global",
-    "support": "7/24 Teknik"
+    "experience": { "tr": "20+ Yıl", "en": "20+ Years" },
+    "clients": { "tr": "1000+", "en": "1000+" },
+    "brands": { "tr": "50+ Global", "en": "50+ Global" },
+    "support": { "tr": "7/24 Teknik", "en": "7/24 Technical" }
   },
   "about": {
-    "title": "Hakkımızda",
-    "subtitle": "Dipol Ltd. Şti., laboratuvar dünyasının ihtiyaçlarını en üst düzeyde karşılamak amacıyla Ankara merkezli kurulmuş, sektörün öncü firmalarından biridir.",
-    "description": "20 yılı aşkın tecrübemizle, Türkiye'nin dört bir yanındaki üniversitelere, araştırma merkezlerine ve özel laboratuvarlara en kaliteli ekipmanları sağlıyoruz.",
-    "vision": "Tüm müşterilerimiz için ayrıcalığın bir standart hale gelmesi ve güvenli, etik değerlere bağlı bir çalışma ortamı yaratmak.",
-    "mission": "Sürdürülebilir üretkenlik ve uzun vadeli ilişkiler oluşturmak için doğrudan ve şeffaf iletişim kurarak en iyi çözümleri sunmak.",
+    "title": { "tr": "Hakkımızda", "en": "About Us" },
+    "subtitle": {
+      "tr": "Dipol Ltd. Şti., laboratuvar dünyasının ihtiyaçlarını en üst düzeyde karşılamak amacıyla Ankara merkezli kurulmuş, sektörün öncü firmalarından biridir.",
+      "en": "Dipol Ltd. is one of the leading companies in the sector, established in Ankara to meet the needs of the laboratory world at the highest level."
+    },
+    "description": {
+      "tr": "20 yılı aşkın tecrübemizle, Türkiye'nin dört bir yanındaki üniversitelere, araştırma merkezlerine ve özel laboratuvarlara en kaliteli ekipmanları sağlıyoruz.",
+      "en": "With over 20 years of experience, we provide the highest quality equipment to universities, research centers, and private laboratories across Turkey."
+    },
+    "vision": {
+      "tr": "Tüm müşterilerimiz için ayrıcalığın bir standart hale gelmesi ve güvenli, etik değerlere bağlı bir çalışma ortamı yaratmak.",
+      "en": "To make privilege a standard for all our customers and to create a safe, ethical work environment."
+    },
+    "mission": {
+      "tr": "Sürdürülebilir üretkenlik ve uzun vadeli ilişkiler oluşturmak için doğrudan ve şeffaf iletişim kurarak en iyi çözümleri sunmak.",
+      "en": "To provide the best solutions by establishing direct and transparent communication to create sustainable productivity and long-term relationships."
+    },
     "image": "/equipment-close.png"
   },
   "contact": {
-    "title": "İletişim",
-    "subtitle": "Sorularınız, teknik destek talepleriniz veya fiyat teklifi almak için bize ulaşın.",
-    "address": "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara",
+    "title": { "tr": "İletişim", "en": "Contact" },
+    "subtitle": {
+      "tr": "Sorularınız, teknik destek talepleriniz veya fiyat teklifi almak için bize ulaşın.",
+      "en": "Contact us for your questions, technical support requests, or to get a quote."
+    },
+    "address": {
+      "tr": "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara",
+      "en": "Asagiovecler Mah. 1325. St. No:13/B Cankaya / Ankara / Turkey"
+    },
     "phone": "0312 428 88 06",
     "email": "info@dipolltd.com",
     "mapsQuery": "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya Ankara"
   },
   "brands": [
-    "Hermle",
-    "Branson",
-    "Geneon",
-    "Kisker",
-    "Atago",
-    "Esco",
-    "GFL"
+    "Hermle", "Branson", "Geneon", "Kisker", "Atago", "Esco", "GFL"
   ],
   "categories": [
     {
       "id": "consumables",
-      "name": "Laboratuvar Sarfları",
-      "description": "Pipetler, cam malzemeler ve örnek toplama kapları.",
+      "name": { "tr": "Laboratuvar Sarfları", "en": "Laboratory Consumables" },
+      "description": {
+        "tr": "Pipetler, cam malzemeler ve örnek toplama kapları.",
+        "en": "Pipettes, glassware, and sample collection containers."
+      },
       "icon": "Beaker",
-      "items": [
-        "Pipetler",
-        "Cam Sarf Malzemeleri",
-        "Örnek Toplama Kapları",
-        "Analitik Laboratuvar Sarfları"
-      ]
+      "items": {
+        "tr": ["Pipetler", "Cam Sarf Malzemeleri", "Örnek Toplama Kapları", "Analitik Laboratuvar Sarfları"],
+        "en": ["Pipettes", "Glass Consumables", "Sample Collection Containers", "Analytical Lab Consumables"]
+      }
     },
     {
       "id": "equipment",
-      "name": "Cihazlar & Ekipman",
-      "description": "Test cihazları ve laboratuvar ekipman yedek parçaları.",
+      "name": { "tr": "Cihazlar & Ekipman", "en": "Instruments & Equipment" },
+      "description": {
+        "tr": "Test cihazları ve laboratuvar ekipman yedek parçaları.",
+        "en": "Test instruments and laboratory equipment spare parts."
+      },
       "icon": "Settings",
-      "items": [
-        "Laboratuvar Ekipmanları",
-        "Test Cihazları",
-        "Ekipman Yedek Parçaları"
-      ]
-    },
-    {
-      "id": "safety",
-      "name": "Özel Ürünler",
-      "description": "İş güvenliği ve kriminal sarf malzemeleri.",
-      "icon": "ShieldCheck",
-      "items": [
-        "İş Güvenliği Ekipmanları",
-        "Kriminal Sarf Malzemeleri",
-        "Özel Amaçlı Üretimler"
-      ]
+      "items": {
+        "tr": ["Laboratuvar Ekipmanları", "Test Cihazları", "Ekipman Yedek Parçaları"],
+        "en": ["Laboratory Equipment", "Test Instruments", "Equipment Spare Parts"]
+      }
     }
   ],
   "testimonials": [
     {
       "id": "1",
       "name": "Dr. Ayşe Yılmaz",
-      "role": "Üniversite Araştırma Görevlisi",
-      "comment": "Dipol'den aldığımız santrifüj cihazları laboratuvarımızın verimliliğini %40 artırdı. Teknik destek ekibi de çok hızlı.",
+      "role": { "tr": "Üniversite Araştırma Görevlisi", "en": "University Research Assistant" },
+      "comment": {
+        "tr": "Dipol'den aldığımız santrifüj cihazları laboratuvarımızın verimliliğini %40 artırdı. Teknik destek ekibi de çok hızlı.",
+        "en": "Centrifuge devices from Dipol increased our lab's efficiency by 40%. The technical support team is also very fast."
+      },
       "date": "2026-04-12"
-    },
-    {
-      "id": "2",
-      "name": "Mehmet Can",
-      "role": "Özel Lab Yöneticisi",
-      "comment": "Sarf malzemesi tedariğinde Ankara'daki en güvenilir çözüm ortağımız. Kalite ve hız bir arada.",
-      "date": "2026-05-01"
     }
   ]
 }

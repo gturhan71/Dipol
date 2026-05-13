@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight, Beaker, Zap, Settings, ShieldCheck, CheckCircle2 } from "lucide-react";
@@ -17,18 +18,22 @@ const IconMap = {
 };
 
 export default function Home() {
+  const [lang, setLang] = useState<"tr" | "en">("tr");
   const { data: content } = useSWR("/api/content", fetcher, {
     refreshInterval: 1000,
     fallbackData: {
-      hero: { title: "...", description: "...", image: "/hero-lab.png" },
+      hero: { title: { tr: "...", en: "..." }, description: { tr: "...", en: "..." }, image: "/hero-lab.png" },
       categories: [],
-      brands: []
+      brands: [],
+      stats: { experience: { tr: "20+ Yıl", en: "20+ Years" } }
     }
   });
 
+  const t = (obj: any) => obj?.[lang] || obj?.tr || "";
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar lang={lang} setLang={setLang} />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
@@ -37,24 +42,24 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              key={content?.hero?.title}
+              key={t(content?.hero?.title)}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-6">
-                {content?.hero?.title?.split(' ').slice(0, -2).join(' ')} <br />
-                <span className="text-primary">{content?.hero?.title?.split(' ').slice(-2).join(' ')}</span>
+                {t(content?.hero?.title)?.split(' ').slice(0, -2).join(' ')} <br />
+                <span className="text-primary">{t(content?.hero?.title)?.split(' ').slice(-2).join(' ')}</span>
               </h1>
               <p className="text-xl text-muted-foreground mb-8 max-w-lg leading-relaxed">
-                {content?.hero?.description}
+                {t(content?.hero?.description)}
               </p>
               <div className="flex flex-wrap gap-4">
                 <a href="#categories" className="bg-primary text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-2 hover:gap-4 transition-all shadow-xl shadow-primary/30">
-                  Ürünleri İncele <ArrowRight className="w-5 h-5" />
+                  {lang === "tr" ? "Ürünleri İncele" : "Explore Products"} <ArrowRight className="w-5 h-5" />
                 </a>
                 <button className="bg-secondary text-foreground px-8 py-4 rounded-xl font-semibold hover:bg-secondary/80 transition-all border border-border">
-                  Kurumsal
+                  {lang === "tr" ? "Kurumsal" : "Corporate"}
                 </button>
               </div>
 
@@ -92,8 +97,8 @@ export default function Home() {
                     <Beaker className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="font-bold text-lg">{content?.stats?.experience || "20+ Yıl"}</p>
-                    <p className="text-sm text-muted-foreground">Güvenilir Laboratuvar Çözümleri</p>
+                    <p className="font-bold text-lg">{t(content?.stats?.experience) || (lang === "tr" ? "20+ Yıl" : "20+ Years")}</p>
+                    <p className="text-sm text-muted-foreground">{lang === "tr" ? "Güvenilir Laboratuvar Çözümleri" : "Reliable Lab Solutions"}</p>
                   </div>
                 </div>
               </motion.div>
@@ -106,9 +111,13 @@ export default function Home() {
       <section id="categories" className="py-24 bg-secondary/20 border-y border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Ürün Kategorilerimiz</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+              {lang === "tr" ? "Ürün Kategorilerimiz" : "Our Product Categories"}
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Laboratuvarınızın tüm ihtiyaçlarını tek bir çatı altında topluyoruz. Orijinal ve yüksek kaliteli çözümler.
+              {lang === "tr" 
+                ? "Laboratuvarınızın tüm ihtiyaçlarını tek bir çatı altında topluyoruz. Orijinal ve yüksek kaliteli çözümler."
+                : "We gather all your laboratory needs under one roof. Original and high-quality solutions."}
             </p>
           </div>
 
@@ -128,10 +137,10 @@ export default function Home() {
                   <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
                     <Icon className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4">{cat.name}</h3>
-                  <p className="text-muted-foreground mb-6 text-sm leading-relaxed">{cat.description}</p>
+                  <h3 className="text-2xl font-bold mb-4">{t(cat.name)}</h3>
+                  <p className="text-muted-foreground mb-6 text-sm leading-relaxed">{t(cat.description)}</p>
                   <ul className="space-y-3">
-                    {cat.items.map((item: string, i: number) => (
+                    {cat.items?.[lang]?.map((item: string, i: number) => (
                       <li key={i} className="flex items-center gap-2 text-sm">
                         <CheckCircle2 className="w-4 h-4 text-primary opacity-70" />
                         {item}
@@ -139,7 +148,7 @@ export default function Home() {
                     ))}
                   </ul>
                   <button className="mt-8 text-primary font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                    Tümünü Gör <ArrowRight className="w-4 h-4" />
+                    {lang === "tr" ? "Tümünü Gör" : "View All"} <ArrowRight className="w-4 h-4" />
                   </button>
                 </motion.div>
               );
@@ -147,6 +156,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* CTA Section */}
       <section className="py-24">

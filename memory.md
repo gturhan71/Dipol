@@ -17,6 +17,8 @@
 - Implemented Firebase Session Management: Created `/api/auth/session` and `/api/auth/logout` routes for secure cookie-based authentication.
 - Enforced Session-Based Protection: Added `middleware.ts` for route protection and refactored API routes to use Firebase session cookies.
 - Cleaned up Dashboard UI: Removed client-side `localStorage` auth logic and manual Authorization headers.
+- **Implemented Full i18n**: Migrated `site-content.json` to `{ tr, en }` structure, updated `page.tsx`, `Navbar.tsx`, and Admin Portal to handle bilingual content.
+- **Added API Rate Limiting**: Implemented IP-based rate limiter in `api/content/route.ts` to prevent brute-force attacks.
 - Syncing changes to GitHub.
 
 

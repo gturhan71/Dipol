@@ -1,0 +1,10 @@
+{
+  "output": "SIGMAP.md",
+  "exclude": [
+    "node_modules",
+    ".git",
+    ".next",
+    "dist",
+    "pnpm-lock.yaml"
+  ]
+}
