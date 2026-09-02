@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, User, Loader2, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
-import { auth } from "@/lib/firebase/config";
+import { getFirebaseAuth } from "@/lib/firebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginPage() {
@@ -22,7 +22,7 @@ export default function LoginPage() {
     try {
       // Firebase Authentication requires email format
       const loginEmail = username.includes("@") ? username : `${username}@dipolltd.com`;
-      const userCredential = await signInWithEmailAndPassword(auth, loginEmail, password);
+      const userCredential = await signInWithEmailAndPassword(getFirebaseAuth(), loginEmail, password);
       const idToken = await userCredential.user.getIdToken();
 
       // Create session cookie via API

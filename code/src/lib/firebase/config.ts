@@ -1,5 +1,5 @@
-import { initializeApp, getApps } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,5 +10,26 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-export const auth = getAuth(app);
+let cachedAuth: Auth | null = null;
+
+/**
+ * Lazily initialise the Firebase client SDK.
+ *
+ * Deferred to the first call (instead of module load) so `next build` can
+ * prerender pages that import this module without the NEXT_PUBLIC_FIREBASE_*
+ * env vars being set. Called at user-interaction time (e.g. login submit),
+ * where a missing config surfaces as a caught error in the UI.
+ */
+export function getFirebaseAuth(): Auth {
+  if (cachedAuth) return cachedAuth;
+
+  if (!firebaseConfig.apiKey) {
+    throw new Error(
+      "Firebase client is not configured. Set the NEXT_PUBLIC_FIREBASE_* env vars."
+    );
+  }
+
+  const app: FirebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  cachedAuth = getAuth(app);
+  return cachedAuth;
+}

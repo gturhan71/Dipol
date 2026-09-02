@@ -1,161 +1,258 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import { ArrowRight, Beaker, Zap, Settings, ShieldCheck, CheckCircle2 } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import useSWR from "swr";
-
-const fetcher = (url: string) => fetch(url).then(res => res.json());
-
-const IconMap = {
+import {
+  ArrowRight,
   Beaker,
   Settings,
   ShieldCheck,
-  Zap
+  Wrench,
+  Repeat,
+  Truck,
+  Check,
+} from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { useLanguage } from "@/components/LanguageProvider";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+const ServiceIcons: Record<string, typeof Beaker> = {
+  Wrench,
+  Beaker,
+  Repeat,
+  Truck,
+};
+
+const GroupIcons: Record<string, typeof Beaker> = {
+  Beaker,
+  Settings,
+  ShieldCheck,
+};
+
+const fadeUp = {
+  initial: { opacity: 0, y: 16 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.4 },
 };
 
 export default function Home() {
-  const [lang, setLang] = useState<"tr" | "en">("tr");
+  const { lang, t } = useLanguage();
   const { data: content } = useSWR("/api/content", fetcher, {
     fallbackData: {
-      hero: { title: { tr: "...", en: "..." }, description: { tr: "...", en: "..." }, image: "/hero-lab.png" },
-      categories: [],
+      hero: { title: {}, description: {}, image: "/hero-lab.png" },
+      stats: {},
+      consulting: { points: {} },
+      services: [],
+      partners: [],
       brands: [],
-      stats: { experience: { tr: "20+ Yıl", en: "20+ Years" } }
-    }
+      productGroups: [],
+      about: { values: {} },
+    },
   });
 
-  const t = (obj: any) => {
-    if (!obj) return "";
-    if (typeof obj === "string") return obj;
-    if (obj[lang] !== undefined && obj[lang] !== "") return obj[lang];
-    if (obj.tr !== undefined) return obj.tr;
-    return "";
-  };
+  const hero = content?.hero || {};
+  const stats = content?.stats || {};
+  const consulting = content?.consulting || {};
+  const services: any[] = content?.services || [];
+  const partners: string[] = content?.partners || [];
+  const brands: string[] = content?.brands || [];
+  const groups: any[] = content?.productGroups || [];
+  const values: string[] = content?.about?.values?.[lang] || [];
 
   return (
     <LazyMotion features={domAnimation}>
       <div className="flex flex-col min-h-screen">
-        <Navbar lang={lang} setLang={setLang} />
+        <Navbar />
 
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-20 overflow-hidden">
-          <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-primary/5 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2" />
-          
+        {/* Hero */}
+        <section className="pt-32 pb-20 border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="lg:grid lg:grid-cols-2 gap-12 items-center">
-              <m.div
-                key={t(content?.hero?.title)}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-6">
-                  {t(content?.hero?.title)?.split(' ').slice(0, -2).join(' ')} <br />
-                  <span className="text-primary">{t(content?.hero?.title)?.split(' ').slice(-2).join(' ')}</span>
-                </h1>
-                <p className="text-xl text-muted-foreground mb-8 max-w-lg leading-relaxed">
-                  {t(content?.hero?.description)}
+            <div className="lg:grid lg:grid-cols-2 gap-16 items-center">
+              <m.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+                <p className="text-sm font-semibold text-primary mb-4">
+                  {lang === "tr" ? "Ankara merkezli laboratuvar tedariği" : "Ankara-based laboratory supply"}
                 </p>
-                <div className="flex flex-wrap gap-4">
-                  <a href="#categories" className="bg-primary text-white px-8 py-4 rounded-xl font-semibold flex items-center gap-2 hover:gap-4 transition-all shadow-xl shadow-primary/30">
-                    {lang === "tr" ? "Ürünleri İncele" : "Explore Products"} <ArrowRight className="w-5 h-5" />
-                  </a>
-                  <button className="bg-secondary text-foreground px-8 py-4 rounded-xl font-semibold hover:bg-secondary/80 transition-all border border-border">
-                    {lang === "tr" ? "Kurumsal" : "Corporate"}
-                  </button>
+                <h1 className="text-4xl lg:text-5xl font-bold leading-tight tracking-tight mb-5">
+                  {t(hero.title)}
+                </h1>
+                <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
+                  {t(hero.description)}
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href="/products"
+                    className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold transition-colors hover:bg-primary/90"
+                  >
+                    {lang === "tr" ? "Ürün gruplarını görün" : "See product groups"}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-2 border border-border px-6 py-3 rounded-lg font-semibold transition-colors hover:bg-secondary"
+                  >
+                    {lang === "tr" ? "Teklif isteyin" : "Request a quote"}
+                  </Link>
                 </div>
 
-                <div className="mt-12 flex flex-wrap items-center gap-8 grayscale opacity-60">
-                  {content?.brands?.slice(0, 5).map((brand: string) => (
-                    <span key={brand} className="font-bold text-lg">{brand}</span>
-                  ))}
-                </div>
+                {partners.length > 0 && (
+                  <div className="mt-12 pt-8 border-t border-border">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-4">
+                      {lang === "tr" ? "İş ortaklıklarımızdan bazıları" : "Some of our partners"}
+                    </p>
+                    <div className="flex flex-wrap gap-x-8 gap-y-3">
+                      {partners.map((p) => (
+                        <span key={p} className="text-base font-semibold text-muted-foreground">
+                          {p}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </m.div>
 
               <m.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 }}
                 className="relative mt-12 lg:mt-0"
               >
-                <div className="relative aspect-square rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white/10 dark:border-zinc-800">
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden border border-border">
                   <Image
-                    src={content?.hero?.image || "/hero-lab.png"}
-                    alt="Modern Laboratory"
+                    src={hero.image || "/hero-lab.png"}
+                    alt={lang === "tr" ? "Laboratuvar" : "Laboratory"}
                     fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover"
                     priority
                   />
                 </div>
-                {/* Floating Badge */}
-                <m.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -bottom-6 -left-6 glass p-6 rounded-2xl shadow-xl max-w-xs"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-primary/20 rounded-lg text-primary">
-                      <Beaker className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-lg">{t(content?.stats?.experience) || (lang === "tr" ? "20+ Yıl" : "20+ Years")}</p>
-                      <p className="text-sm text-muted-foreground">{lang === "tr" ? "Güvenilir Laboratuvar Çözümleri" : "Reliable Lab Solutions"}</p>
-                    </div>
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div className="border border-border rounded-lg p-4">
+                    <p className="text-2xl font-bold">{t(stats.experience)}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {lang === "tr" ? "Sektör tecrübesi" : "Industry experience"}
+                    </p>
                   </div>
-                </m.div>
+                  <div className="border border-border rounded-lg p-4">
+                    <p className="text-2xl font-bold">{t(stats.brands)}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {lang === "tr" ? "Global tedarik markası" : "Global supply brands"}
+                    </p>
+                  </div>
+                </div>
               </m.div>
             </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section id="categories" className="py-24 bg-secondary/20 border-y border-border">
+        {/* Procurement consultancy */}
+        <section className="py-20 border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
-                {lang === "tr" ? "Ürün Kategorilerimiz" : "Our Product Categories"}
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                {lang === "tr" 
-                  ? "Laboratuvarınızın tüm ihtiyaçlarını tek bir çatı altında topluyoruz. Orijinal ve yüksek kaliteli çözümler."
-                  : "We gather all your laboratory needs under one roof. Original and high-quality solutions."}
-              </p>
-            </div>
+            <m.div {...fadeUp} className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+              <div>
+                <h2 className="text-3xl font-bold tracking-tight mb-5">{t(consulting.title)}</h2>
+                <p className="text-muted-foreground leading-relaxed">{t(consulting.description)}</p>
+              </div>
+              <ul className="space-y-4">
+                {(consulting.points?.[lang] || []).map((point: string) => (
+                  <li key={point} className="flex items-start gap-3">
+                    <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-foreground">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </m.div>
+          </div>
+        </section>
 
+        {/* Services */}
+        <section className="py-20 border-b border-border bg-secondary/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <m.h2 {...fadeUp} className="text-3xl font-bold tracking-tight mb-3">
+              {lang === "tr" ? "Servislerimiz" : "Our services"}
+            </m.h2>
+            <m.p {...fadeUp} className="text-muted-foreground mb-12 max-w-2xl">
+              {lang === "tr"
+                ? "Tedarik sürecinin her aşamasında yanınızdayız."
+                : "We support you at every stage of the procurement process."}
+            </m.p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border border-border">
+              {services.map((service) => {
+                const Icon = ServiceIcons[service.icon] || Wrench;
+                return (
+                  <div key={service.id} className="bg-background p-6">
+                    <Icon className="w-6 h-6 text-primary mb-4" />
+                    <h3 className="font-semibold mb-2">{t(service.title)}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {t(service.description)}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Brand portfolio */}
+        <section className="py-20 border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <m.h2 {...fadeUp} className="text-3xl font-bold tracking-tight mb-3">
+              {lang === "tr" ? "Ürün portföyümüz" : "Our portfolio"}
+            </m.h2>
+            <m.p {...fadeUp} className="text-muted-foreground mb-12 max-w-2xl">
+              {lang === "tr"
+                ? "Farklı uygulamalara yönelik çözümler sunduğumuz markalar."
+                : "Brands we work with across a range of applications."}
+            </m.p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px bg-border border border-border rounded-xl overflow-hidden">
+              {brands.map((brand) => (
+                <div
+                  key={brand}
+                  className="bg-background px-5 py-6 text-center font-semibold text-muted-foreground"
+                >
+                  {brand}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Product groups */}
+        <section className="py-20 border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <m.h2 {...fadeUp} className="text-3xl font-bold tracking-tight mb-3">
+              {lang === "tr" ? "Ürün grupları" : "Product groups"}
+            </m.h2>
+            <m.p {...fadeUp} className="text-muted-foreground mb-12 max-w-2xl">
+              {lang === "tr" ? "Kullanım alanlarına göre" : "Organised by area of use"}
+            </m.p>
             <div className="grid md:grid-cols-3 gap-8">
-              {content?.categories?.map((cat: any, idx: number) => {
-                const Icon = IconMap[cat.icon as keyof typeof IconMap] || Beaker;
+              {groups.map((group) => {
+                const Icon = GroupIcons[group.icon] || Beaker;
                 return (
                   <m.div
-                    key={cat.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="bg-background p-8 rounded-3xl border border-border shadow-sm hover:shadow-2xl hover:border-primary/20 transition-all group relative overflow-hidden"
+                    key={group.id}
+                    {...fadeUp}
+                    className="border border-border rounded-xl p-6"
                   >
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500" />
-                    <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                      <Icon className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-4">{t(cat.name)}</h3>
-                    <p className="text-muted-foreground mb-6 text-sm leading-relaxed">{t(cat.description)}</p>
-                    <ul className="space-y-3">
-                      {cat.items?.[lang]?.map((item: string, i: number) => (
-                        <li key={i} className="flex items-center gap-2 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-primary opacity-70" />
+                    <Icon className="w-6 h-6 text-primary mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">{t(group.name)}</h3>
+                    <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                      {t(group.description)}
+                    </p>
+                    <ul className="space-y-2">
+                      {(group.items?.[lang] || []).map((item: string) => (
+                        <li key={item} className="flex items-start gap-2 text-sm">
+                          <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                           {item}
                         </li>
                       ))}
                     </ul>
-                    <button className="mt-8 text-primary font-bold text-sm flex items-center gap-2 group-hover:gap-3 transition-all">
-                      {lang === "tr" ? "Tümünü Gör" : "View All"} <ArrowRight className="w-4 h-4" />
-                    </button>
                   </m.div>
                 );
               })}
@@ -163,26 +260,51 @@ export default function Home() {
           </div>
         </section>
 
-
-        {/* CTA Section */}
-        <section className="py-24">
+        {/* Vision */}
+        <section className="py-20 border-b border-border bg-secondary/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-primary rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden shadow-2xl shadow-primary/30">
-              <div className="absolute top-0 right-0 w-1/3 h-full bg-white/5 -skew-x-12 translate-x-1/2" />
-              <div className="relative z-10 max-w-2xl">
-                <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Özel Bir Projeniz mi Var?</h2>
-                <p className="text-xl text-primary-foreground/80 mb-8 leading-relaxed font-medium">
-                  Laboratuvar kurulumu, ekipman tedariği veya teknik destek ihtiyaçlarınız için uzman ekibimiz yanınızda.
-                </p>
-                <button className="bg-white text-primary px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all">
-                  Bizimle İletişime Geçin
-                </button>
-              </div>
+            <m.h2 {...fadeUp} className="text-3xl font-bold tracking-tight mb-12">
+              {lang === "tr" ? "Vizyonumuz" : "Our vision"}
+            </m.h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {values.map((value, i) => (
+                <m.div key={i} {...fadeUp} className="border-t-2 border-primary pt-5">
+                  <span className="text-sm font-semibold text-muted-foreground">
+                    0{i + 1}
+                  </span>
+                  <p className="mt-2 text-foreground leading-relaxed">{value}</p>
+                </m.div>
+              ))}
             </div>
           </div>
         </section>
 
-        <Footer lang={lang} />
+        {/* CTA */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="border border-border rounded-xl p-10 md:p-14 flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="max-w-xl">
+                <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
+                  {lang === "tr" ? "Bir projeniz mi var?" : "Have a project in mind?"}
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  {lang === "tr"
+                    ? "İhtiyaç duyduğunuz ekipman, sarf ve yedek parçalar için fiyat teklifi ve teknik destek alın."
+                    : "Get a quote and technical support for the equipment, consumables and spare parts you need."}
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold whitespace-nowrap transition-colors hover:bg-primary/90"
+              >
+                {lang === "tr" ? "İletişime geçin" : "Get in touch"}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
       </div>
     </LazyMotion>
   );

@@ -3,117 +3,130 @@
 import { useState } from "react";
 import Link from "next/link";
 import useSWR from "swr";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ShieldCheck } from "lucide-react";
+import { X } from "lucide-react";
 import { KVKK_CONTENT } from "@/data/kvkk-content";
+import { useLanguage } from "@/components/LanguageProvider";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export default function Footer({ lang = "tr" }: { lang?: "tr" | "en" }) {
+const LEGAL_NAME = "Dipol Lab. ve Bilimsel Cihazlar Danışmanlık İth. İhr. San. ve Tic. Ltd. Şti.";
+
+export default function Footer() {
+  const { lang, t } = useLanguage();
   const { data: content } = useSWR("/api/content", fetcher);
   const [isKvkkOpen, setIsKvkkOpen] = useState(false);
-  
+
   const contact = content?.contact || {
-    address: { tr: "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara", en: "Asagiovecler Mah. 1325. St. No:13/B Cankaya / Ankara / Turkey" },
+    address: { tr: "Aşağıöveçler Mah. 1325. Sok. No: 13/B Çankaya / Ankara", en: "" },
     phone: "0312 428 88 06",
-    email: "info@dipolltd.com"
+    email: "info@dipolltd.com",
   };
 
-  const t = (obj: any) => {
-    if (!obj) return "";
-    if (typeof obj === "string") return obj;
-    if (obj[lang] !== undefined && obj[lang] !== "") return obj[lang];
-    if (obj.tr !== undefined) return obj.tr;
-    return "";
-  };
+  const nav = [
+    { href: "/", label: { tr: "Ana Sayfa", en: "Home" } },
+    { href: "/products", label: { tr: "Ürünler", en: "Products" } },
+    { href: "/about", label: { tr: "Hakkımızda", en: "About" } },
+    { href: "/contact", label: { tr: "İletişim", en: "Contact" } },
+  ];
+
+  const tr = (o: { tr: string; en: string }) => (lang === "tr" ? o.tr : o.en);
 
   return (
-    <footer className="py-12 border-t border-border bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-12 mb-12">
-          <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-6 group">
-              <div className="relative w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-xl overflow-hidden shadow-lg transition-transform group-hover:scale-110">
-                {content?.logo ? (
-                  <Image src={content.logo} alt="Logo" fill className="object-contain p-1" />
-                ) : (
-                  "D"
-                )}
-              </div>
-              <span className="font-bold text-xl tracking-tight">DIPOL</span>
+    <footer className="border-t border-border bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid gap-10 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <Link href="/" className="inline-flex items-center gap-2.5 mb-4">
+              <span className="w-8 h-8 bg-primary rounded-md flex items-center justify-center text-white font-bold">
+                D
+              </span>
+              <span className="font-bold text-lg tracking-tight">DIPOL</span>
             </Link>
-            <p className="text-muted-foreground max-w-sm mb-6 text-sm leading-relaxed">
-              {lang === "tr" 
-                ? "Laboratuvar cihazları ve sarf malzemelerinde 20 yılı aşkın tecrübe ile bilimsel çalışmalarınıza değer katıyoruz."
-                : "Adding value to your scientific studies with over 20 years of experience in laboratory equipment and consumables."}
+            <p className="text-sm text-muted-foreground max-w-sm leading-relaxed">
+              {lang === "tr"
+                ? "Laboratuvar cihazları, sarf malzemeleri ve yedek parçalarında 20 yılı aşkın tedarik tecrübesi."
+                : "Over 20 years of supply experience in laboratory instruments, consumables and spare parts."}
             </p>
           </div>
+
           <div>
-            <h4 className="font-bold mb-6">{lang === "tr" ? "Hızlı Linkler" : "Quick Links"}</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
-              <li><Link href="/" className="hover:text-primary transition-colors">{lang === "tr" ? "Ana Sayfa" : "Home"}</Link></li>
-              <li><Link href="/products" className="hover:text-primary transition-colors">{lang === "tr" ? "Ürünler" : "Products"}</Link></li>
-              <li><Link href="/about" className="hover:text-primary transition-colors">{lang === "tr" ? "Hakkımızda" : "About Us"}</Link></li>
-              <li><Link href="/contact" className="hover:text-primary transition-colors">{lang === "tr" ? "İletişim" : "Contact"}</Link></li>
+            <h4 className="text-sm font-semibold mb-4">
+              {lang === "tr" ? "Bağlantılar" : "Links"}
+            </h4>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
+              {nav.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="hover:text-foreground transition-colors">
+                    {tr(item.label)}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
+
           <div>
-            <h4 className="font-bold mb-6">{lang === "tr" ? "İletişim" : "Contact"}</h4>
-            <ul className="space-y-4 text-sm text-muted-foreground">
+            <h4 className="text-sm font-semibold mb-4">
+              {lang === "tr" ? "İletişim" : "Contact"}
+            </h4>
+            <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li>{t(contact.address)}</li>
-              <li>Tel: {contact.phone}</li>
-              <li>Email: {contact.email}</li>
+              <li>
+                <a href={`tel:${(contact.phone || "").replace(/\s/g, "")}`} className="hover:text-foreground transition-colors">
+                  {contact.phone}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${contact.email}`} className="hover:text-foreground transition-colors">
+                  {contact.email}
+                </a>
+              </li>
             </ul>
           </div>
         </div>
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
-          <p>© 2026 DIPOL LTD. {lang === "tr" ? "Tüm Hakları Saklıdır." : "All Rights Reserved."}</p>
-          <div className="flex gap-6">
-            <button 
-              onClick={() => setIsKvkkOpen(true)}
-              className="hover:text-primary transition-colors"
-            >
-              {lang === "tr" ? "KVKK Bildirimi" : "Privacy Policy"}
-            </button>
-            <a href="#" className="hover:text-primary">{lang === "tr" ? "Gizlilik Politikası" : "Terms of Service"}</a>
-          </div>
+
+        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-sm text-muted-foreground">
+          <p>© {new Date().getFullYear()} {LEGAL_NAME}</p>
+          <button
+            onClick={() => setIsKvkkOpen(true)}
+            className="hover:text-foreground transition-colors"
+          >
+            {lang === "tr" ? "KVKK Aydınlatma Metni" : "Privacy Notice (KVKK)"}
+          </button>
         </div>
       </div>
 
-      {/* KVKK Modal */}
       <AnimatePresence>
         {isKvkkOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-background rounded-[2.5rem] border border-border shadow-2xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden"
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.15 }}
+              className="bg-background rounded-xl border border-border w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden"
             >
-              <div className="p-8 border-b border-border flex justify-between items-center bg-secondary/10 shrink-0">
-                <div className="flex items-center gap-3 text-primary">
-                  <ShieldCheck className="w-6 h-6" />
-                  <h3 className="text-xl font-bold">KVKK Aydınlatma Metni</h3>
-                </div>
-                <button 
-                  onClick={() => setIsKvkkOpen(false)} 
-                  className="p-2 hover:bg-secondary rounded-full transition-all"
+              <div className="px-6 py-4 border-b border-border flex justify-between items-center">
+                <h3 className="font-semibold">KVKK Aydınlatma Metni</h3>
+                <button
+                  onClick={() => setIsKvkkOpen(false)}
+                  className="p-1.5 hover:bg-secondary rounded-md transition-colors"
+                  aria-label="Kapat"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="p-10 overflow-y-auto prose prose-sm dark:prose-invert max-w-none">
-                <div className="whitespace-pre-wrap text-muted-foreground leading-relaxed">
+              <div className="px-6 py-5 overflow-y-auto">
+                <div className="whitespace-pre-wrap text-sm text-muted-foreground leading-relaxed">
                   {KVKK_CONTENT}
                 </div>
               </div>
-              <div className="p-6 border-t border-border bg-secondary/5 text-center shrink-0">
-                <button 
+              <div className="px-6 py-4 border-t border-border text-right shrink-0">
+                <button
                   onClick={() => setIsKvkkOpen(false)}
-                  className="bg-primary text-white px-10 py-3 rounded-xl font-bold hover:shadow-lg transition-all"
+                  className="bg-primary text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors hover:bg-primary/90"
                 >
-                  Anladım
+                  {lang === "tr" ? "Kapat" : "Close"}
                 </button>
               </div>
             </motion.div>

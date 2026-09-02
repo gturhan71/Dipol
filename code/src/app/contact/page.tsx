@@ -1,145 +1,174 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Send, MessageSquare, Loader2 } from "lucide-react";
+import { Phone, Mail, MapPin, Send, Loader2, Check } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useLanguage } from "@/components/LanguageProvider";
 import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Contact() {
+  const { lang, t } = useLanguage();
   const { data: content, isLoading } = useSWR("/api/content", fetcher);
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [sent, setSent] = useState(false);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-secondary/10">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
       </div>
     );
   }
 
-  const contact = content?.contact || {
-    address: "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara",
-    phone: "0312 428 88 06",
-    email: "info@dipolltd.com",
-    mapsQuery: "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya Ankara"
+  const contact = content?.contact || {};
+  const email = contact.email || "info@dipolltd.com";
+  const phone = contact.phone || "0312 428 88 06";
+  const mapsQuery = contact.mapsQuery || "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya Ankara";
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = form.subject || (lang === "tr" ? "İletişim formu" : "Contact form");
+    const body = [
+      `${lang === "tr" ? "Ad Soyad" : "Name"}: ${form.name}`,
+      `${lang === "tr" ? "E-posta" : "Email"}: ${form.email}`,
+      "",
+      form.message,
+    ].join("\n");
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setSent(true);
   };
+
+  const details = [
+    { icon: Phone, label: { tr: "Telefon", en: "Phone" }, value: phone, href: `tel:${phone.replace(/\s/g, "")}` },
+    { icon: Mail, label: { tr: "E-posta", en: "Email" }, value: email, href: `mailto:${email}` },
+    { icon: MapPin, label: { tr: "Adres", en: "Address" }, value: t(contact.address), href: null },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
 
-      <section className="pt-32 pb-20 overflow-hidden">
+      <section className="pt-32 pb-16 border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">İletişim</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Sorularınız, teknik destek talepleriniz veya fiyat teklifi almak için bize ulaşın.
-            </p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">{t(contact.title)}</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+            {t(contact.subtitle)}
+          </p>
+        </div>
+      </section>
+
+      <section className="py-16 border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-3 gap-12">
+          <div className="space-y-8">
+            {details.map((d) => (
+              <div key={d.label.tr} className="flex items-start gap-3">
+                <d.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold mb-1">{lang === "tr" ? d.label.tr : d.label.en}</p>
+                  {d.href ? (
+                    <a href={d.href} className="text-muted-foreground hover:text-foreground transition-colors">
+                      {d.value}
+                    </a>
+                  ) : (
+                    <p className="text-muted-foreground leading-relaxed">{d.value}</p>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-1 space-y-8">
-              <div className="p-8 rounded-3xl bg-secondary/20 border border-border">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                  <Phone className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold mb-2">Telefon</h3>
-                <p className="text-muted-foreground">{contact.phone}</p>
+          <div className="lg:col-span-2">
+            {sent ? (
+              <div className="border border-border rounded-xl p-10 text-center">
+                <Check className="w-10 h-10 text-primary mx-auto mb-3" />
+                <p className="font-semibold mb-1">
+                  {lang === "tr" ? "Mesajınız hazırlandı" : "Your message is ready"}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {lang === "tr"
+                    ? "E-posta uygulamanız açıldı; mesajı onaylayıp gönderin."
+                    : "Your email app has opened — confirm and send the message."}
+                </p>
               </div>
-
-              <div className="p-8 rounded-3xl bg-secondary/20 border border-border">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                  <Mail className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold mb-2">E-posta</h3>
-                <p className="text-muted-foreground">{contact.email}</p>
-              </div>
-
-              <div className="p-8 rounded-3xl bg-secondary/20 border border-border">
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
-                  <MapPin className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold mb-2">Adres</h3>
-                <p className="text-muted-foreground">{contact.address}</p>
-              </div>
-            </div>
-
-            <div className="lg:col-span-2">
-              <div className="p-10 rounded-[2.5rem] bg-background border border-border shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-                
-                <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                  <MessageSquare className="w-8 h-8 text-primary" />
-                  Bize Mesaj Gönderin
-                </h2>
-
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold ml-1">Adınız Soyadınız</label>
-                      <input 
-                        type="text" 
-                        placeholder="Örn: Ahmet Yılmaz"
-                        className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold ml-1">E-posta Adresiniz</label>
-                      <input 
-                        type="email" 
-                        placeholder="Örn: ahmet@mail.com"
-                        className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold ml-1">Konu</label>
-                    <input 
-                      type="text" 
-                      placeholder="Örn: Teknik Destek"
-                      className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+            ) : (
+              <form onSubmit={handleSubmit} className="border border-border rounded-xl p-8 space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium">
+                      {lang === "tr" ? "Ad Soyad" : "Full name"}
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                     />
                   </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold ml-1">Mesajınız</label>
-                    <textarea 
-                      rows={5}
-                      placeholder="Size nasıl yardımcı olabiliriz?"
-                      className="w-full px-5 py-4 rounded-2xl border border-border bg-secondary/10 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
-                    ></textarea>
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-medium">
+                      {lang === "tr" ? "E-posta" : "Email"}
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
+                    />
                   </div>
+                </div>
 
-                  <button className="w-full bg-primary text-white py-5 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:shadow-xl shadow-primary/20 transition-all">
-                    Mesajı Gönder <Send className="w-5 h-5" />
-                  </button>
-                </form>
-              </div>
-            </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">{lang === "tr" ? "Konu" : "Subject"}</label>
+                  <input
+                    type="text"
+                    value={form.subject}
+                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">{lang === "tr" ? "Mesajınız" : "Message"}</label>
+                  <textarea
+                    rows={5}
+                    required
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-lg font-semibold transition-colors hover:bg-primary/90"
+                >
+                  <Send className="w-4 h-4" />
+                  {lang === "tr" ? "Gönder" : "Send"}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Google Maps Integration */}
-      <section className="py-20">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="aspect-[21/9] rounded-[3rem] bg-secondary/30 border border-border overflow-hidden relative shadow-inner">
+          <div className="aspect-[21/9] rounded-xl border border-border overflow-hidden">
             <iframe
+              title={lang === "tr" ? "Konum haritası" : "Location map"}
               width="100%"
               height="100%"
-              style={{ border: 0, filter: "grayscale(0.5) contrast(1.2) invert(0.05)" }}
+              style={{ border: 0 }}
               loading="lazy"
-              allowFullScreen
-              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyD-NO_REAL_KEY_NEEDED_FOR_SIMPLE_EMBED_SOMETIMES_BUT_GOOGLE_ALLOWS_DIRECT_SEARCH_IFRAME&q=${encodeURIComponent(contact.mapsQuery)}`}
-              // Note: For standard embed without key, we can use the search URL
-              srcDoc={`
-                <style>body{margin:0;overflow:hidden;}iframe{border:0;width:100%;height:100%;filter:grayscale(0.2);}</style>
-                <iframe src="https://maps.google.com/maps?q=${encodeURIComponent(contact.mapsQuery)}&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
-              `}
-            ></iframe>
+              referrerPolicy="no-referrer-when-downgrade"
+              src={`https://maps.google.com/maps?q=${encodeURIComponent(mapsQuery)}&z=15&output=embed`}
+            />
           </div>
         </div>
       </section>

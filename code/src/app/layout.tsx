@@ -77,6 +77,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 
+import { LanguageProvider } from "@/components/LanguageProvider";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 export default async function RootLayout({
@@ -92,7 +93,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
       {analytics.gaId && <GoogleAnalytics gaId={analytics.gaId} />}
       {analytics.gtmId && <GoogleTagManager gtmId={analytics.gtmId} />}

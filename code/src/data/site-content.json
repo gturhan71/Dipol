@@ -1,115 +1,232 @@
 {
   "seo": {
     "title": {
-      "tr": "DIPOL LTD. ŞTİ. | Laboratuvar Çözümleri",
-      "en": "DIPOL LTD. | Laboratory Solutions"
+      "tr": "DIPOL LTD. ŞTİ. | Laboratuvar Cihazları ve Sarf Malzemeleri",
+      "en": "DIPOL LTD. | Laboratory Instruments and Consumables"
     },
     "description": {
-      "tr": "Laboratuvar cihazları, sarf malzemeleri ve yedek parçalarında dünyanın önde gelen markalarının Türkiye distribütörü ve çözüm ortağı.",
-      "en": "Turkey's leading distributor and solution partner for world-renowned laboratory equipment, consumables, and spare parts."
+      "tr": "Ankara merkezli Dipol Ltd. Şti.; laboratuvar cihazları, sarf malzemeleri ve yedek parçalarını dünyanın önde gelen markalarından doğrudan üreticisinden tedarik eder. Orijinal ve muadil çözümler, hızlı tedarik.",
+      "en": "Ankara-based Dipol Ltd. supplies laboratory instruments, consumables and spare parts from the world's leading brands, directly from the manufacturer. Original and compatible solutions, fast procurement."
     },
     "keywords": {
-      "tr": "laboratuvar cihazları, sarf malzemeleri, dipol ltd, ankara laboratuvar, bilimsel ekipman",
-      "en": "laboratory equipment, consumables, dipol ltd, ankara laboratory, scientific equipment"
+      "tr": "laboratuvar cihazları, laboratuvar sarf malzemeleri, yedek parça temini, muadil sarf malzemesi, Ankara laboratuvar, Hermle santrifüj, Branson ultrasonik, Kisker, Nabertherm, GFL, Binder",
+      "en": "laboratory instruments, laboratory consumables, spare part supply, compatible consumables, Ankara laboratory, Hermle centrifuge, Branson ultrasonic, Kisker, Nabertherm, GFL, Binder"
     },
     "analytics": {
-      "gtmId": "GTM-XXXXXXX",
-      "gaId": "G-XXXXXXX"
+      "gtmId": "",
+      "gaId": ""
     }
   },
   "logo": "/uploads/1778617758935-302119036-dipol_logo.jpg",
   "hero": {
     "title": {
-      "tr": "Bilimin Geleceğini Birlikte Şekillendirelim",
-      "en": "Shaping the Future of Science Together"
+      "tr": "Laboratuvar cihazları ve sarf malzemeleri",
+      "en": "Laboratory instruments and consumables"
     },
     "description": {
-      "tr": "Dünyanın önde gelen markalarının laboratuvar cihazları, sarf malzemeleri ve yedek parçalarını Türkiye'ye taşıyoruz.",
-      "en": "We bring laboratory equipment, consumables, and spare parts from the world's leading brands to Turkey."
+      "tr": "Dünyanın önde gelen markalarının laboratuvar cihazlarını, sarf malzemelerini ve yedek parçalarını doğrudan üreticisinden, orijinal ve uygun maliyetli olarak tedarik ediyoruz.",
+      "en": "We supply laboratory instruments, consumables and spare parts from the world's leading brands — original and cost-effective, directly from the manufacturer."
     },
     "image": "/hero-lab.png"
   },
   "stats": {
     "experience": { "tr": "20+ Yıl", "en": "20+ Years" },
-    "clients": { "tr": "1000+", "en": "1000+" },
-    "brands": { "tr": "50+ Global", "en": "50+ Global" },
-    "support": { "tr": "7/24 Teknik", "en": "7/24 Technical" }
+    "clients": { "tr": "Ankara Merkezli", "en": "Based in Ankara" },
+    "brands": { "tr": "12+ Marka", "en": "12+ Brands" },
+    "support": { "tr": "Teknik Destek", "en": "Technical Support" }
   },
+  "consulting": {
+    "title": { "tr": "Tedarik konusunda danışmanlık", "en": "Procurement consultancy" },
+    "description": {
+      "tr": "Araştırma projelerinizde ihtiyaç duyduğunuz ekipman, kimyasal ve sarf malzemeleri için doğrudan üreticisinden garantili ürün temini. Bütçenize uygun, orijinal ürüne %100 uyumlu alternatifleri birlikte belirliyoruz.",
+      "en": "Guaranteed products sourced directly from the manufacturer for the equipment, chemicals and consumables your research projects need. Together we identify cost-effective alternatives that are 100% compatible with the original product."
+    },
+    "points": {
+      "tr": ["Ürün numunesi tedariği", "Uygun alternatif oluşturma", "Doğrudan üreticiden garantili temin"],
+      "en": ["Product sample supply", "Building suitable alternatives", "Guaranteed sourcing from the manufacturer"]
+    }
+  },
+  "services": [
+    {
+      "id": "spare-parts",
+      "icon": "Wrench",
+      "title": { "tr": "Yedek Parça Temini", "en": "Spare Part Supply" },
+      "description": {
+        "tr": "Kullandığınız sistemler için orijinal yedek parça temini ve servis destek hizmetleri.",
+        "en": "Original spare parts and service support for the systems you already use."
+      }
+    },
+    {
+      "id": "consumables",
+      "icon": "Beaker",
+      "title": { "tr": "Sarf Malzemesi Temini", "en": "Consumables Supply" },
+      "description": {
+        "tr": "Orijinal ve muadil sarf malzemelerinin güvenilir tedariği.",
+        "en": "Reliable supply of original and compatible consumables."
+      }
+    },
+    {
+      "id": "alternatives",
+      "icon": "Repeat",
+      "title": { "tr": "Alternatif Ürün Pozisyonlama", "en": "Alternative Product Positioning" },
+      "description": {
+        "tr": "Uygun maliyetli, ancak %100 uyumlu yedek parça ve sarf malzemeleri.",
+        "en": "Cost-effective yet 100% compatible spare parts and consumables."
+      }
+    },
+    {
+      "id": "fast-supply",
+      "icon": "Truck",
+      "title": { "tr": "Hızlı Tedarik Süreçleri", "en": "Fast Procurement" },
+      "description": {
+        "tr": "Kısa ve öngörülebilir sipariş ve tedarik süreçleri.",
+        "en": "Short, predictable ordering and procurement cycles."
+      }
+    }
+  ],
   "about": {
     "title": { "tr": "Hakkımızda", "en": "About Us" },
     "subtitle": {
-      "tr": "Dipol Ltd. Şti., laboratuvar dünyasının ihtiyaçlarını en üst düzeyde karşılamak amacıyla Ankara merkezli kurulmuş, sektörün öncü firmalarından biridir.",
-      "en": "Dipol Ltd. is one of the leading companies in the sector, established in Ankara to meet the needs of the laboratory world at the highest level."
+      "tr": "Dipol Ltd. Şti., laboratuvar dünyasının cihaz, sarf ve yedek parça ihtiyaçlarını karşılamak üzere Ankara merkezli kurulmuş bir tedarik firmasıdır.",
+      "en": "Dipol Ltd. is an Ankara-based supply company established to meet the instrument, consumable and spare-part needs of the laboratory world."
     },
     "description": {
-      "tr": "20 yılı aşkın tecrübemizle, Türkiye'nin dört bir yanındaki üniversitelere, araştırma merkezlerine ve özel laboratuvarlara en kaliteli ekipmanları sağlıyoruz.",
-      "en": "With over 20 years of experience, we provide the highest quality equipment to universities, research centers, and private laboratories across Turkey."
+      "tr": "20 yılı aşkın tecrübemizle üniversitelere, araştırma merkezlerine ve özel laboratuvarlara dünyanın önde gelen markalarından ürün tedarik ediyor; orijinal ürüne uyumlu, uygun maliyetli alternatifler oluşturuyoruz.",
+      "en": "With over 20 years of experience we supply products from the world's leading brands to universities, research centres and private laboratories, and build cost-effective alternatives compatible with the original product."
     },
     "vision": {
-      "tr": "Tüm müşterilerimiz için ayrıcalığın bir standart hale gelmesi ve güvenli, etik değerlere bağlı bir çalışma ortamı yaratmak.",
-      "en": "To make privilege a standard for all our customers and to create a safe, ethical work environment."
+      "tr": "Tüm müşterilerimiz için ayrıcalığın bir standart hâline gelmesi; güvenli ve etik değerlere bağlı bir çalışma ortamı yaratmak.",
+      "en": "To make privilege a standard for every customer, and to build a safe, ethically grounded working environment."
     },
     "mission": {
-      "tr": "Sürdürülebilir üretkenlik ve uzun vadeli ilişkiler oluşturmak için doğrudan ve şeffaf iletişim kurarak en iyi çözümleri sunmak.",
-      "en": "To provide the best solutions by establishing direct and transparent communication to create sustainable productivity and long-term relationships."
+      "tr": "Sürdürülebilir üretkenlik ve uzun vadeli ilişkiler için doğrudan ve şeffaf iletişim kurarak en uygun çözümü sunmak.",
+      "en": "To deliver the most suitable solution through direct, transparent communication that builds sustainable productivity and long-term relationships."
+    },
+    "values": {
+      "tr": [
+        "Ayrıcalığın tüm müşteriler için standart hâline gelmesi",
+        "Güvenli ve etik değerlere bağlı çalışma ortamı",
+        "Sürdürülebilir üretkenlik ve uzun vadeli ilişkiler için doğrudan iletişim"
+      ],
+      "en": [
+        "Making privilege a standard for every customer",
+        "A safe working environment bound to ethical values",
+        "Direct communication for sustainable productivity and long-term relationships"
+      ]
     },
     "image": "/equipment-close.png"
   },
   "contact": {
     "title": { "tr": "İletişim", "en": "Contact" },
     "subtitle": {
-      "tr": "Sorularınız, teknik destek talepleriniz veya fiyat teklifi almak için bize ulaşın.",
-      "en": "Contact us for your questions, technical support requests, or to get a quote."
+      "tr": "Ürün, yedek parça veya teknik destek talepleriniz ve fiyat teklifi için bize ulaşın.",
+      "en": "Contact us for product, spare-part or technical-support requests and price quotes."
     },
     "address": {
-      "tr": "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya / Ankara",
-      "en": "Asagiovecler Mah. 1325. St. No:13/B Cankaya / Ankara / Turkey"
+      "tr": "Aşağıöveçler Mah. 1325. Sok. No: 13/B Çankaya / Ankara",
+      "en": "Asagiovecler Mah. 1325. Sok. No: 13/B Cankaya / Ankara / Türkiye"
     },
     "phone": "0312 428 88 06",
     "email": "info@dipolltd.com",
     "mapsQuery": "Aşağıöveçler Mah. 1325. Sok. No:13/B Çankaya Ankara"
   },
+  "partners": ["Kisker", "Geneon", "Hermle", "Branson"],
   "brands": [
-    "Hermle", "Branson", "Geneon", "Kisker", "Atago", "Esco", "GFL"
+    "Kisker", "AHF", "Binder", "Branson", "Filmetrics", "Geneon",
+    "GFL", "Greyhound", "Hermle", "JISL", "Nabertherm", "Labor Security Systems"
   ],
-  "categories": [
+  "productGroups": [
     {
-      "id": "consumables",
-      "name": { "tr": "Laboratuvar Sarfları", "en": "Laboratory Consumables" },
+      "id": "analytical-consumables",
+      "name": { "tr": "Analitik ve Genel Laboratuvar Sarfları", "en": "Analytical & General Lab Consumables" },
       "description": {
-        "tr": "Pipetler, cam malzemeler ve örnek toplama kapları.",
-        "en": "Pipettes, glassware, and sample collection containers."
+        "tr": "Günlük laboratuvar operasyonları ve analitik cihazlar için sarf malzemeleri.",
+        "en": "Consumables for day-to-day lab operations and analytical instruments."
       },
       "icon": "Beaker",
       "items": {
-        "tr": ["Pipetler", "Cam Sarf Malzemeleri", "Örnek Toplama Kapları", "Analitik Laboratuvar Sarfları"],
-        "en": ["Pipettes", "Glass Consumables", "Sample Collection Containers", "Analytical Lab Consumables"]
+        "tr": [
+          "Pipetler",
+          "Cam sarf malzemeleri",
+          "Örnek toplama kapları",
+          "Analitik laboratuvar cihazları sarfları",
+          "Genel laboratuvar cihazları sarfları"
+        ],
+        "en": [
+          "Pipettes",
+          "Glass consumables",
+          "Sample collection containers",
+          "Analytical instrument consumables",
+          "General instrument consumables"
+        ]
       }
     },
     {
       "id": "equipment",
-      "name": { "tr": "Cihazlar & Ekipman", "en": "Instruments & Equipment" },
+      "name": { "tr": "Ekipman", "en": "Equipment" },
       "description": {
-        "tr": "Test cihazları ve laboratuvar ekipman yedek parçaları.",
-        "en": "Test instruments and laboratory equipment spare parts."
+        "tr": "Laboratuvar ekipmanları, test cihazları ve bunların yedek parçaları.",
+        "en": "Laboratory equipment, test instruments and their spare parts."
       },
       "icon": "Settings",
       "items": {
-        "tr": ["Laboratuvar Ekipmanları", "Test Cihazları", "Ekipman Yedek Parçaları"],
-        "en": ["Laboratory Equipment", "Test Instruments", "Equipment Spare Parts"]
+        "tr": ["Laboratuvar ekipmanları", "Test cihazları", "Ekipman yedek parçaları"],
+        "en": ["Laboratory equipment", "Test instruments", "Equipment spare parts"]
+      }
+    },
+    {
+      "id": "other",
+      "name": { "tr": "Diğer Ürünler", "en": "Other Products" },
+      "description": {
+        "tr": "İş güvenliği, adli/kriminal uygulamalar ve özel amaçlı üretimler.",
+        "en": "Occupational safety, forensic applications and purpose-built production."
+      },
+      "icon": "ShieldCheck",
+      "items": {
+        "tr": ["İş güvenliği ekipmanları", "Kriminal sarf malzemeleri", "Özel amaçlı üretimlerimiz"],
+        "en": ["Occupational safety equipment", "Forensic consumables", "Purpose-built production"]
       }
     }
   ],
-  "testimonials": [
+  "categories": [
     {
-      "id": "1",
-      "name": "Dr. Ayşe Yılmaz",
-      "role": { "tr": "Üniversite Araştırma Görevlisi", "en": "University Research Assistant" },
-      "comment": {
-        "tr": "Dipol'den aldığımız santrifüj cihazları laboratuvarımızın verimliliğini %40 artırdı. Teknik destek ekibi de çok hızlı.",
-        "en": "Centrifuge devices from Dipol increased our lab's efficiency by 40%. The technical support team is also very fast."
+      "id": "analytical-consumables",
+      "name": { "tr": "Analitik ve Genel Laboratuvar Sarfları", "en": "Analytical & General Lab Consumables" },
+      "description": {
+        "tr": "Pipetler, cam malzemeler ve örnek toplama kapları.",
+        "en": "Pipettes, glassware and sample collection containers."
       },
-      "date": "2026-04-12"
+      "icon": "Beaker",
+      "items": {
+        "tr": ["Pipetler", "Cam sarf malzemeleri", "Örnek toplama kapları", "Analitik cihaz sarfları"],
+        "en": ["Pipettes", "Glass consumables", "Sample collection containers", "Analytical instrument consumables"]
+      }
+    },
+    {
+      "id": "equipment",
+      "name": { "tr": "Ekipman", "en": "Equipment" },
+      "description": {
+        "tr": "Laboratuvar ekipmanları, test cihazları ve yedek parçalar.",
+        "en": "Laboratory equipment, test instruments and spare parts."
+      },
+      "icon": "Settings",
+      "items": {
+        "tr": ["Laboratuvar ekipmanları", "Test cihazları", "Ekipman yedek parçaları"],
+        "en": ["Laboratory equipment", "Test instruments", "Equipment spare parts"]
+      }
+    },
+    {
+      "id": "other",
+      "name": { "tr": "Diğer Ürünler", "en": "Other Products" },
+      "description": {
+        "tr": "İş güvenliği ekipmanları, kriminal sarf malzemeleri ve özel üretimler.",
+        "en": "Occupational safety equipment, forensic consumables and custom production."
+      },
+      "icon": "ShieldCheck",
+      "items": {
+        "tr": ["İş güvenliği ekipmanları", "Kriminal sarf malzemeleri", "Özel amaçlı üretimler"],
+        "en": ["Occupational safety equipment", "Forensic consumables", "Purpose-built production"]
+      }
     }
   ]
 }
