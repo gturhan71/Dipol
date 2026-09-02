@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Search, Globe, Mail, Phone, User, MessageSquare, Send, Loader2 } from "lucide-react";
+import { Menu, X, Globe, Mail, User, Send, Loader2, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import useSWR from "swr";
+import { useLanguage } from "@/components/LanguageProvider";
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-export default function Navbar({ lang = "tr", setLang }: { lang?: "tr" | "en", setLang?: (lang: "tr" | "en") => void }) {
+export default function Navbar() {
+  const { lang, setLang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -25,15 +27,31 @@ export default function Navbar({ lang = "tr", setLang }: { lang?: "tr" | "en", s
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleQuoteSubmit = async (e: React.FormEvent) => {
+  const email = content?.contact?.email || "info@dipolltd.com";
+
+  const nav = [
+    { href: "/", label: { tr: "Ana Sayfa", en: "Home" } },
+    { href: "/products", label: { tr: "Ürünler", en: "Products" } },
+    { href: "/about", label: { tr: "Hakkımızda", en: "About" } },
+    { href: "/contact", label: { tr: "İletişim", en: "Contact" } },
+  ];
+
+  const tr = (o: { tr: string; en: string }) => (lang === "tr" ? o.tr : o.en);
+
+  const handleQuoteSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate API call/Mail sending
-    // In a real app, this would POST to /api/send-mail
-    const mailBody = `Ad Soyad: ${quoteForm.name}%0D%0AE-posta: ${quoteForm.email}%0D%0ATelefon: ${quoteForm.phone}%0D%0AMesaj: ${quoteForm.message}`;
-    window.location.href = `mailto:info@dipolltd.com?subject=Yeni Teklif Talebi - ${quoteForm.name}&body=${mailBody}`;
-    
+    const subject =
+      lang === "tr" ? `Teklif talebi - ${quoteForm.name}` : `Quote request - ${quoteForm.name}`;
+    const body = [
+      `${lang === "tr" ? "Ad Soyad" : "Name"}: ${quoteForm.name}`,
+      `${lang === "tr" ? "E-posta" : "Email"}: ${quoteForm.email}`,
+      `${lang === "tr" ? "Telefon" : "Phone"}: ${quoteForm.phone}`,
+      "",
+      quoteForm.message,
+    ].join("\n");
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
@@ -42,91 +60,112 @@ export default function Navbar({ lang = "tr", setLang }: { lang?: "tr" | "en", s
         setIsQuoteModalOpen(false);
         setQuoteForm({ name: "", email: "", phone: "", message: "" });
       }, 2000);
-    }, 1000);
+    }, 600);
   };
 
   return (
     <>
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border py-2" : "bg-transparent py-4"
-      }`}>
+      <nav
+        className={`fixed w-full z-50 transition-colors duration-200 border-b ${
+          scrolled
+            ? "bg-background/95 backdrop-blur border-border py-2"
+            : "bg-background border-transparent py-4"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white overflow-hidden shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
+          <div className="flex justify-between items-center h-14">
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="relative w-9 h-9 bg-primary rounded-md flex items-center justify-center text-white overflow-hidden">
                 {content?.logo ? (
-                  <Image src={content.logo} alt="Logo" fill className="object-contain p-1" />
+                  <Image src={content.logo} alt="DIPOL" fill className="object-contain p-1" />
                 ) : (
-                  <span className="font-bold text-2xl">D</span>
+                  <span className="font-bold text-lg">D</span>
                 )}
-              </div>
-              <div className="flex flex-col">
-                <span className="font-bold text-xl tracking-tight leading-none">DIPOL</span>
-                <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-medium">Laboratuvar Çözümleri</span>
-              </div>
+              </span>
+              <span className="flex flex-col leading-none">
+                <span className="font-bold text-lg tracking-tight">DIPOL</span>
+                <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                  {lang === "tr" ? "Laboratuvar Tedariği" : "Laboratory Supply"}
+                </span>
+              </span>
             </Link>
 
-            {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "Ana Sayfa" : "Home"}</Link>
-              <Link href="/products" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "Ürünler" : "Products"}</Link>
-              <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "Hakkımızda" : "About Us"}</Link>
-              <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">{lang === "tr" ? "İletişim" : "Contact"}</Link>
+              {nav.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {tr(item.label)}
+                </Link>
+              ))}
             </div>
 
-            {/* Right Side */}
-            <div className="hidden md:flex items-center gap-4">
-              {setLang && (
-                <button 
-                  onClick={() => setLang(lang === "tr" ? "en" : "tr")} 
-                  className="flex items-center gap-1.5 p-2 hover:bg-secondary rounded-xl transition-colors text-sm font-bold border border-transparent hover:border-border"
-                >
-                  <Globe className="w-4 h-4" /> {lang === "tr" ? "EN" : "TR"}
-                </button>
-              )}
-              <div className="h-4 w-[1px] bg-border mx-2" />
-              <button 
+            <div className="hidden md:flex items-center gap-3">
+              <button
+                onClick={() => setLang(lang === "tr" ? "en" : "tr")}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+              >
+                <Globe className="w-4 h-4" />
+                {lang === "tr" ? "EN" : "TR"}
+              </button>
+              <button
                 onClick={() => setIsQuoteModalOpen(true)}
-                className="flex items-center gap-2 text-sm font-bold bg-primary text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95"
+                className="inline-flex items-center gap-2 text-sm font-semibold bg-primary text-white px-4 py-2 rounded-lg transition-colors hover:bg-primary/90"
               >
                 <Mail className="w-4 h-4" />
-                {lang === "tr" ? "Teklif Al" : "Get Quote"}
+                {lang === "tr" ? "Teklif Al" : "Get a Quote"}
               </button>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-muted-foreground">
-                {isOpen ? <X /> : <Menu />}
-              </button>
-            </div>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 text-muted-foreground"
+              aria-label="Menu"
+            >
+              {isOpen ? <X /> : <Menu />}
+            </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-background border-b border-border overflow-hidden"
+              transition={{ duration: 0.2 }}
+              className="md:hidden bg-background border-t border-border overflow-hidden"
             >
-              <div className="px-4 pt-2 pb-6 space-y-2">
-                <Link href="/" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "Ana Sayfa" : "Home"}</Link>
-                <Link href="/products" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "Ürünler" : "Products"}</Link>
-                <Link href="/about" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "Hakkımızda" : "About Us"}</Link>
-                <Link href="/contact" className="block px-3 py-4 text-base font-medium border-b border-border/50">{lang === "tr" ? "İletişim" : "Contact"}</Link>
-                <div className="pt-4">
-                  <button 
+              <div className="px-4 py-3">
+                {nav.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block px-1 py-3 text-base font-medium border-b border-border last:border-0"
+                  >
+                    {tr(item.label)}
+                  </Link>
+                ))}
+                <div className="flex items-center gap-3 pt-4">
+                  <button
+                    onClick={() => setLang(lang === "tr" ? "en" : "tr")}
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-lg border border-border text-sm font-semibold"
+                  >
+                    <Globe className="w-4 h-4" />
+                    {lang === "tr" ? "EN" : "TR"}
+                  </button>
+                  <button
                     onClick={() => {
                       setIsOpen(false);
                       setIsQuoteModalOpen(true);
                     }}
-                    className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-2xl font-bold"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-primary text-white py-2.5 rounded-lg font-semibold"
                   >
-                    <Mail className="w-4 h-4" /> Teklif Al
+                    <Mail className="w-4 h-4" />
+                    {lang === "tr" ? "Teklif Al" : "Get a Quote"}
                   </button>
                 </div>
               </div>
@@ -135,95 +174,111 @@ export default function Navbar({ lang = "tr", setLang }: { lang?: "tr" | "en", s
         </AnimatePresence>
       </nav>
 
-      {/* Quote Request Modal */}
       <AnimatePresence>
         {isQuoteModalOpen && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-background rounded-[2.5rem] border border-border shadow-2xl w-full max-w-lg overflow-hidden"
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.15 }}
+              className="bg-background rounded-xl border border-border w-full max-w-lg overflow-hidden"
             >
-              <div className="p-8 border-b border-border flex justify-between items-center bg-secondary/10">
-                <div className="flex items-center gap-3">
-                  <Mail className="w-6 h-6 text-primary" />
-                  <h3 className="text-xl font-bold">Teklif Talebi Oluştur</h3>
-                </div>
-                <button onClick={() => setIsQuoteModalOpen(false)} className="p-2 hover:bg-secondary rounded-full transition-all">
+              <div className="px-6 py-4 border-b border-border flex justify-between items-center">
+                <h3 className="font-semibold flex items-center gap-2">
+                  <Mail className="w-5 h-5 text-primary" />
+                  {lang === "tr" ? "Teklif Talebi" : "Quote Request"}
+                </h3>
+                <button
+                  onClick={() => setIsQuoteModalOpen(false)}
+                  className="p-1.5 hover:bg-secondary rounded-md transition-colors"
+                  aria-label={lang === "tr" ? "Kapat" : "Close"}
+                >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
               {isSubmitted ? (
-                <div className="p-12 text-center space-y-4">
-                  <div className="w-16 h-16 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto">
-                    <Send className="w-8 h-8" />
-                  </div>
-                  <h4 className="text-xl font-bold">Talebiniz Alındı!</h4>
-                  <p className="text-muted-foreground">E-posta istemciniz açılıyor, lütfen formu onaylayıp gönderin.</p>
+                <div className="p-10 text-center">
+                  <Check className="w-10 h-10 text-primary mx-auto mb-3" />
+                  <p className="font-semibold mb-1">
+                    {lang === "tr" ? "Talebiniz hazırlandı" : "Your request is ready"}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {lang === "tr"
+                      ? "E-posta uygulamanız açılıyor; lütfen mesajı onaylayıp gönderin."
+                      : "Your email app is opening — please confirm and send the message."}
+                  </p>
                 </div>
               ) : (
-                <form onSubmit={handleQuoteSubmit} className="p-8 space-y-5">
+                <form onSubmit={handleQuoteSubmit} className="p-6 space-y-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Ad Soyad</label>
+                    <label className="text-sm font-medium">
+                      {lang === "tr" ? "Ad Soyad" : "Full name"}
+                    </label>
                     <div className="relative">
-                      <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <input 
-                        type="text" 
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <input
+                        type="text"
                         required
                         value={quoteForm.name}
-                        onChange={(e) => setQuoteForm({...quoteForm, name: e.target.value})}
-                        className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                        placeholder="Örn: Gökhan Turhan"
+                        onChange={(e) => setQuoteForm({ ...quoteForm, name: e.target.value })}
+                        className="w-full pl-10 pr-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold uppercase text-muted-foreground ml-1">E-posta</label>
-                      <input 
-                        type="email" 
+                      <label className="text-sm font-medium">
+                        {lang === "tr" ? "E-posta" : "Email"}
+                      </label>
+                      <input
+                        type="email"
                         required
                         value={quoteForm.email}
-                        onChange={(e) => setQuoteForm({...quoteForm, email: e.target.value})}
-                        className="w-full px-4 py-3.5 rounded-xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                        placeholder="mail@örnek.com"
+                        onChange={(e) => setQuoteForm({ ...quoteForm, email: e.target.value })}
+                        className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-xs font-bold uppercase text-muted-foreground ml-1">Telefon</label>
-                      <input 
-                        type="tel" 
+                      <label className="text-sm font-medium">
+                        {lang === "tr" ? "Telefon" : "Phone"}
+                      </label>
+                      <input
+                        type="tel"
                         required
                         value={quoteForm.phone}
-                        onChange={(e) => setQuoteForm({...quoteForm, phone: e.target.value})}
-                        className="w-full px-4 py-3.5 rounded-xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                        placeholder="05xx..."
+                        onChange={(e) => setQuoteForm({ ...quoteForm, phone: e.target.value })}
+                        className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold uppercase text-muted-foreground ml-1">İhtiyacınız Olan Ürün / Mesaj</label>
-                    <textarea 
+                    <label className="text-sm font-medium">
+                      {lang === "tr" ? "İhtiyacınız / mesajınız" : "Your requirement / message"}
+                    </label>
+                    <textarea
                       required
                       rows={3}
                       value={quoteForm.message}
-                      onChange={(e) => setQuoteForm({...quoteForm, message: e.target.value})}
-                      className="w-full px-4 py-3.5 rounded-xl border border-border bg-secondary/10 focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                      placeholder="Teklif almak istediğiniz ürünleri belirtiniz..."
+                      onChange={(e) => setQuoteForm({ ...quoteForm, message: e.target.value })}
+                      className="w-full px-3 py-2.5 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/30 transition-shadow resize-none"
                     />
                   </div>
 
-                  <button 
+                  <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-50 mt-2"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-primary text-white py-2.5 rounded-lg font-semibold transition-colors hover:bg-primary/90 disabled:opacity-60"
                   >
-                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-                    Teklif Talebi Gönder
+                    {isSubmitting ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Send className="w-4 h-4" />
+                    )}
+                    {lang === "tr" ? "Gönder" : "Send"}
                   </button>
                 </form>
               )}
