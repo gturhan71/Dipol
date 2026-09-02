@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 
 import { readFile } from "fs/promises";
 import path from "path";
+import { cache } from "react";
 
-async function getSiteData() {
+const getSiteData = cache(async () => {
   try {
     const filePath = path.join(process.cwd(), "src/data/site-content.json");
     const fileData = await readFile(filePath, "utf-8");
@@ -23,7 +24,7 @@ async function getSiteData() {
   } catch (error) {
     return null;
   }
-}
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getSiteData();
@@ -77,7 +78,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 
 import { LanguageProvider } from "@/components/LanguageProvider";
-import Script from "next/script";
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 export default async function RootLayout({
   children,
@@ -89,63 +90,15 @@ export default async function RootLayout({
 
   return (
     <html lang="tr" className="scroll-smooth">
-      <head>
-        {/* Google Tag Manager */}
-        {analytics.gtmId && (
-          <Script
-            id="gtm-script"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','${analytics.gtmId}');
-              `,
-            }}
-          />
-        )}
-        {/* GA4 */}
-        {analytics.gaId && (
-          <>
-            <Script
-               src={`https://www.googletagmanager.com/gtag/js?id=${analytics.gaId}`}
-               strategy="afterInteractive"
-            />
-            <Script
-              id="ga-script"
-              strategy="afterInteractive"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${analytics.gaId}');
-                `,
-              }}
-            />
-          </>
-        )}
-      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* GTM Noscript */}
-        {analytics.gtmId && (
-          <noscript>
-            <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${analytics.gtmId}`}
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-        )}
         <LanguageProvider>
           {children}
         </LanguageProvider>
       </body>
+      {analytics.gaId && <GoogleAnalytics gaId={analytics.gaId} />}
+      {analytics.gtmId && <GoogleTagManager gtmId={analytics.gtmId} />}
     </html>
   );
 }

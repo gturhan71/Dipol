@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, User, Loader2, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
+import { auth } from "@/lib/firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -18,23 +20,33 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const response = await fetch("/api/auth/login", {
+      // Firebase Authentication requires email format
+      const loginEmail = username.includes("@") ? username : `${username}@dipolltd.com`;
+      const userCredential = await signInWithEmailAndPassword(auth, loginEmail, password);
+      const idToken = await userCredential.user.getIdToken();
+
+      // Create session cookie via API
+      const response = await fetch("/api/auth/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ idToken })
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.token) {
-        // SECURITY: Store token (ideally in an HTTP-only cookie, but for this demo localStorage works with server-side validation)
-        localStorage.setItem("dipol_admin_auth", data.token);
+      if (response.ok) {
         router.push("/portal/dashboard");
       } else {
-        setError(data.error || "Giriş başarısız. Lütfen bilgilerinizi kontrol edin.");
+        const data = await response.json();
+        setError(data.error || "Oturum oluşturulamadı.");
       }
-    } catch (err) {
-      setError("Sunucu ile iletişim kurulamadı.");
+    } catch (err: any) {
+      console.error("Login error:", err);
+      if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+        setError("Geçersiz kullanıcı adı veya şifre.");
+      } else if (err.code === "auth/too-many-requests") {
+        setError("Çok fazla hatalı deneme. Lütfen daha sonra tekrar deneyin.");
+      } else {
+        setError("Giriş yapılırken bir hata oluştu.");
+      }
     } finally {
       setIsLoading(false);
     }

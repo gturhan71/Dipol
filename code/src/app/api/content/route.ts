@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
+import { adminAuth } from "@/lib/firebase/admin";
+import { cookies } from "next/headers";
 
 const contentPath = path.join(process.cwd(), "src/data/site-content.json");
 
@@ -25,9 +27,16 @@ function checkRateLimit(ip: string): boolean {
 }
 
 // Simple authentication helper
-function isAuthorized(request: Request) {
-  const authHeader = request.headers.get("authorization");
-  return authHeader === `Bearer ${process.env.ADMIN_AUTH_TOKEN}`;
+async function isAuthorized() {
+  const session = (await cookies()).get("session")?.value;
+  if (!session) return false;
+  try {
+    await adminAuth.verifySessionCookie(session, true);
+    return true;
+  } catch (error) {
+    console.error("Session verification failed:", error);
+    return false;
+  }
 }
 
 function getIp(request: Request): string {
@@ -66,7 +75,7 @@ export async function POST(request: Request) {
   }
 
   // SECURITY: Check authorization
-  if (!isAuthorized(request)) {
+  if (!(await isAuthorized())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
