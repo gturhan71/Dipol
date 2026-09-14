@@ -79,6 +79,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 import { LanguageProvider } from "@/components/LanguageProvider";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { Analytics } from "@vercel/analytics/next";
 
 export default async function RootLayout({
   children,
@@ -96,6 +97,7 @@ export default async function RootLayout({
         <LanguageProvider>
           {children}
         </LanguageProvider>
+        <Analytics />
       </body>
       {analytics.gaId && <GoogleAnalytics gaId={analytics.gaId} />}
       {analytics.gtmId && <GoogleTagManager gtmId={analytics.gtmId} />}
